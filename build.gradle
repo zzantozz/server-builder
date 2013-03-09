@@ -1,0 +1,77 @@
+apply plugin: 'idea'
+
+subprojects {
+    apply plugin: 'groovy'
+    apply plugin: 'idea'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        compile(
+            'org.codehaus.groovy:groovy-all:2.1.1',
+            'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
+            'org.slf4j:slf4j-api:1.7.2',
+        )
+        testCompile(
+            'org.spockframework:spock-core:0.7-groovy-2.0',
+            'com.sun.jersey:jersey-client:1.17', // Just a convenient HTTP client to test with
+            'com.sun.jersey:jersey-core:1.17', // Needed for jersey client
+            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey client
+            'ch.qos.logback:logback-classic:1.0.9',
+        )
+    }
+}
+
+project('jetty-server-builder-api') {
+    dependencies {
+        compile(
+            // Jersey client should be an optional dependency that users can choose to include if they want to use
+            // the client-building ability.
+            'com.sun.jersey:jersey-client:1.17',
+            'com.sun.jersey:jersey-core:1.17',
+            'javax.ws.rs:jsr311-api:1.1.1',
+        )
+        testCompile(
+        )
+    }
+}
+
+project('jetty-server-builder-core') {
+    dependencies {
+        compile(
+            project(':jetty-server-builder-api'),
+            // All the modules should be optional dependencies so users can pick which one to use explicitly and not
+            // get a ton of unwanted dependencies.
+            project(':jetty-server-builder-springmvc'),
+            project(':jetty-server-builder-jersey'),
+        )
+        testCompile(
+        )
+    }
+}
+
+project('jetty-server-builder-springmvc') {
+    dependencies {
+        compile(
+            project(':jetty-server-builder-api'),
+            'org.springframework:spring-webmvc:3.2.1.RELEASE',
+            'org.springframework:spring-web:3.2.1.RELEASE',
+            'org.springframework:spring-context:3.2.1.RELEASE',
+            'org.springframework:spring-beans:3.2.1.RELEASE',
+        )
+        testCompile(
+        )
+    }
+}
+
+project('jetty-server-builder-jersey') {
+    dependencies {
+        compile(
+            project(':jetty-server-builder-api'),
+            'com.sun.jersey:jersey-server:1.17',
+        )
+        testCompile(
+        )
+    }
+}
