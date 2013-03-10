@@ -89,8 +89,8 @@ class JerseyBuilder extends AbstractJettyServerBuilder {
             servletHolder = new ServletHolder(new ExistingContextSpringServlet(springContext))
         }
         handler.addServlet(servletHolder, jerseyServletUrlPattern)
-        handler.setContextPath(contextPath)
-        server.setHandler(handler)
+        handler.contextPath = contextPath
+        server.handler = handler
         server.start()
         server
     }

@@ -65,8 +65,8 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
         if (rootContext) handler.addEventListener(new ContextLoaderListener(rootContext))
         def servletHolder = new ServletHolder(new DispatcherServlet(dispatcherContext))
         handler.addServlet(servletHolder, dispatcherServletUrlPattern)
-        handler.setContextPath(getContextPath())
-        server.setHandler handler
+        handler.contextPath = contextPath
+        server.handler = handler
         server.start()
         server
     }
