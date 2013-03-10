@@ -58,6 +58,7 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
         new SpringMvcBuilder(this.contextPath, port, this.rootContext, this.dispatcherContext, this.dispatcherServletMapping)
     }
 
+    @Override
     Server server() {
         def server = new Server(port)
         def handler = new ServletContextHandler()

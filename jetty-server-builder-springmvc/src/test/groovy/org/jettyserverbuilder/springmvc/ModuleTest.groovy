@@ -67,7 +67,7 @@ class ModuleTest {
     Server thisTestServer
 
     @After
-    public void tearDown() {
+    void tearDown() {
         thisTestServer?.stop()
     }
 

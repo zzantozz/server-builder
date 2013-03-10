@@ -70,6 +70,12 @@ project('jetty-server-builder-jersey') {
         compile(
             project(':jetty-server-builder-api'),
             'com.sun.jersey:jersey-server:1.17',
+            'com.sun.jersey:jersey-servlet:1.17',
+            'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
+            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey-server
+            'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
+            'org.springframework:spring-context:3.2.1.RELEASE', // Needed for springy jersey
+            'org.springframework:spring-web:3.2.1.RELEASE', // Needed for springy jersey
         )
         testCompile(
         )
