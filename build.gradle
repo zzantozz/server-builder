@@ -37,10 +37,32 @@ project('jetty-server-builder-api') {
     }
 }
 
+project('jetty-server-builder-common') {
+    dependencies {
+        compile(
+            project(':jetty-server-builder-api'),
+        )
+        testCompile(
+        )
+    }
+}
+
+project('jetty-server-builder-test-support') {
+    dependencies {
+        compile(
+            project(':jetty-server-builder-common'),
+        )
+        testCompile(
+            'org.spockframework:spock-core:0.7-groovy-2.0',
+        )
+    }
+}
+
 project('jetty-server-builder-core') {
     dependencies {
         compile(
             project(':jetty-server-builder-api'),
+            project(':jetty-server-builder-common'),
             // All the modules should be optional dependencies so users can pick which one to use explicitly and not
             // get a ton of unwanted dependencies.
             project(':jetty-server-builder-springmvc'),
@@ -55,6 +77,7 @@ project('jetty-server-builder-springmvc') {
     dependencies {
         compile(
             project(':jetty-server-builder-api'),
+            project(':jetty-server-builder-common'),
             'org.springframework:spring-webmvc:3.2.1.RELEASE',
             'org.springframework:spring-web:3.2.1.RELEASE',
             'org.springframework:spring-context:3.2.1.RELEASE',
@@ -69,6 +92,7 @@ project('jetty-server-builder-jersey') {
     dependencies {
         compile(
             project(':jetty-server-builder-api'),
+            project(':jetty-server-builder-common'),
             'com.sun.jersey:jersey-server:1.17',
             'com.sun.jersey:jersey-servlet:1.17',
             'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server

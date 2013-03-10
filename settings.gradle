@@ -1,1 +1,1 @@
-include 'jetty-server-builder-api', 'jetty-server-builder-core', 'jetty-server-builder-springmvc', 'jetty-server-builder-jersey'
+include 'jetty-server-builder-api', 'jetty-server-builder-common', 'jetty-server-builder-test-support', 'jetty-server-builder-core', 'jetty-server-builder-springmvc', 'jetty-server-builder-jersey'
