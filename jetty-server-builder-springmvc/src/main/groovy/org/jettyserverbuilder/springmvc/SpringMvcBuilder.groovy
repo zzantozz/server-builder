@@ -22,29 +22,29 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
     final int port = 8080
     final WebApplicationContext rootContext
     final WebApplicationContext dispatcherContext
-    final String dispatcherServletMapping = '/*'
+    final String dispatcherServletUrlPattern = '/*'
 
     static SpringMvcBuilder newSpringMvcServer(WebApplicationContext dispatcherContext) {
         new SpringMvcBuilder().withDispatcherContext(dispatcherContext)
     }
 
     SpringMvcBuilder withRootContext(WebApplicationContext rootContext) {
-        new SpringMvcBuilder(this.contextPath, this.port, rootContext, this.dispatcherContext, this.dispatcherServletMapping)
+        new SpringMvcBuilder(this.contextPath, this.port, rootContext, this.dispatcherContext, this.dispatcherServletUrlPattern)
     }
 
     SpringMvcBuilder withDispatcherContext(WebApplicationContext dispatcherContext) {
-        new SpringMvcBuilder(this.contextPath, this.port, this.rootContext, dispatcherContext, this.dispatcherServletMapping)
+        new SpringMvcBuilder(this.contextPath, this.port, this.rootContext, dispatcherContext, this.dispatcherServletUrlPattern)
     }
 
     SpringMvcBuilder atContextPath(String contextPath) {
         if (!contextPath.startsWith('/')) {
             throw new IllegalArgumentException("Context path must start with a '/', was $contextPath")
         }
-        new SpringMvcBuilder(contextPath, this.port, this.rootContext, this.dispatcherContext, this.dispatcherServletMapping)
+        new SpringMvcBuilder(contextPath, this.port, this.rootContext, this.dispatcherContext, this.dispatcherServletUrlPattern)
     }
 
     SpringMvcBuilder atRootContextPath() {
-        new SpringMvcBuilder(this.contextPath, this.port, this.rootContext, this.dispatcherContext, this.dispatcherServletMapping)
+        new SpringMvcBuilder('/', this.port, this.rootContext, this.dispatcherContext, this.dispatcherServletUrlPattern)
     }
 
     SpringMvcBuilder mappedTo(String dispatcherServletMapping) {
@@ -55,7 +55,7 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
     }
 
     SpringMvcBuilder onPort(int port) {
-        new SpringMvcBuilder(this.contextPath, port, this.rootContext, this.dispatcherContext, this.dispatcherServletMapping)
+        new SpringMvcBuilder(this.contextPath, port, this.rootContext, this.dispatcherContext, this.dispatcherServletUrlPattern)
     }
 
     @Override
@@ -64,7 +64,7 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
         def handler = new ServletContextHandler()
         if (rootContext) handler.addEventListener(new ContextLoaderListener(rootContext))
         def servletHolder = new ServletHolder(new DispatcherServlet(dispatcherContext))
-        handler.addServlet(servletHolder, dispatcherServletMapping)
+        handler.addServlet(servletHolder, dispatcherServletUrlPattern)
         handler.setContextPath(getContextPath())
         server.setHandler handler
         server.start()

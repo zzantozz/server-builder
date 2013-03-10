@@ -72,6 +72,11 @@ class ModuleTest {
     }
 
     @Test
+    void 'a bare-minimum builder creates a working server'() {
+        verify SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans)
+    }
+
+    @Test
     void 'supports typical parent/child spring mvc apps'() {
         verify SpringMvcBuilder.newSpringMvcServer(onlyDispatcherBeans)
                 .withRootContext(onlyRootBeans)
@@ -104,7 +109,7 @@ class ModuleTest {
     }
 
     @Test
-    void 'supports running at the root servlet context'() {
+    void 'supports running at the root context'() {
         verify SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).atRootContextPath()
     }
 
@@ -120,11 +125,6 @@ class ModuleTest {
     void 'fails on setting a servlet path without a leading slash'() {
         expectedException.expect(IllegalArgumentException)
         SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).mappedTo('noLeadingSlash')
-    }
-
-    @Test
-    void 'a bare-minimum builder creates a working server'() {
-        verify SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans)
     }
 
     void verify(SpringMvcBuilder builder) {

@@ -1,7 +1,11 @@
 package org.jettyserverbuilder.jersey
+
+import com.sun.jersey.api.client.Client
 import org.eclipse.jetty.server.Server
 import org.junit.After
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.FileSystemXmlApplicationContext
 
@@ -26,6 +30,8 @@ class ModuleTest {
         String sayHi() { 'Hi from the JAX-RS resource!' }
     }
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none()
     Server thisTestServer
 
     @After
@@ -48,6 +54,47 @@ class ModuleTest {
     void 'supports creating a jersey-spring application with an existing ApplicationContext'() {
         ApplicationContext context = new FileSystemXmlApplicationContext(testContextFile().absolutePath)
         verify JerseyBuilder.newJerseyServer(context)
+    }
+
+    @Test
+    void 'supports running on specific ports'() {
+        def builder = JerseyBuilder.newJerseyServer(TestApplication).onPort(10101)
+        thisTestServer = builder.server()
+        assert Client.create().resource('http://localhost:10101/builderTest/getter').get(String) ==
+                'Hi from the JAX-RS resource!'
+    }
+
+    @Test
+    void 'supports running with a specific context path'() {
+        def builder = JerseyBuilder.newJerseyServer(TestApplication).atContextPath('/testContextPath/path2')
+        thisTestServer = builder.server()
+        assert Client.create().resource("http://localhost:$builder.port/testContextPath/path2/builderTest/getter").get(String) ==
+                'Hi from the JAX-RS resource!'
+    }
+
+    @Test
+    void 'fails on setting a context path without a leading slash'() {
+        expectedException.expect(IllegalArgumentException)
+        JerseyBuilder.newJerseyServer(TestApplication).atContextPath('noLeadingSlash')
+    }
+
+    @Test
+    void 'supports running at the root context'() {
+        verify JerseyBuilder.newJerseyServer(TestApplication).atRootContextPath()
+    }
+
+    @Test
+    void 'supports running at a specific servlet path'() {
+        def builder = JerseyBuilder.newJerseyServer(TestApplication).mappedTo('/testServletPath/path2/*')
+        thisTestServer = builder.server()
+        assert Client.create().resource("http://localhost:$builder.port/testServletPath/path2/builderTest/getter").get(String) ==
+                'Hi from the JAX-RS resource!'
+    }
+
+    @Test
+    void 'fails on setting a servlet path without a leading slash'() {
+        expectedException.expect(IllegalArgumentException)
+        JerseyBuilder.newJerseyServer(TestApplication).mappedTo('noLeadingSlash')
     }
 
     void verify(JerseyBuilder builder) {

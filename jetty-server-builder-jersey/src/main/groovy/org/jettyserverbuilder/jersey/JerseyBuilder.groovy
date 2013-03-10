@@ -2,11 +2,11 @@ package org.jettyserverbuilder.jersey
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
 import groovy.transform.CompileStatic
+import groovy.transform.TupleConstructor
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.jettyserverbuilder.AbstractJettyServerBuilder
-import org.jettyserverbuilder.JettyServerBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.web.context.ContextLoader
 import org.springframework.web.context.ContextLoaderListener
@@ -19,12 +19,14 @@ import javax.ws.rs.core.Application
  * Time: 6:21 PM
  */
 @CompileStatic
+@TupleConstructor
 class JerseyBuilder extends AbstractJettyServerBuilder {
     final String contextPath = '/'
     final int port = 8080
-    Class<? extends Application> applicationClass
-    String springContextConfigLocation
-    ConfigurableApplicationContext springContext
+    final String jerseyServletUrlPattern = '/*'
+    final Class<? extends Application> applicationClass
+    final String springContextConfigLocation
+    final ConfigurableApplicationContext springContext
 
     static JerseyBuilder newJerseyServer(Class<? extends Application> applicationClass) {
         new JerseyBuilder().withApplicationClass(applicationClass)
@@ -39,48 +41,55 @@ class JerseyBuilder extends AbstractJettyServerBuilder {
     }
 
     JerseyBuilder withApplicationClass(Class<? extends Application> applicationClass) {
-        this.applicationClass = applicationClass
-        this
+        new JerseyBuilder(this.contextPath, this.port, this.jerseyServletUrlPattern, applicationClass, this.springContextConfigLocation, this.springContext)
     }
 
     JerseyBuilder withSpringContextConfigLocation(String springContextConfigLocation) {
-        this.springContextConfigLocation = springContextConfigLocation
-        this
+        new JerseyBuilder(this.contextPath, this.port, this.jerseyServletUrlPattern, this.applicationClass, springContextConfigLocation, this.springContext)
     }
 
-    JerseyBuilder withSpringContext(ConfigurableApplicationContext applicationContext) {
-        this.springContext = applicationContext
-        this
+    JerseyBuilder withSpringContext(ConfigurableApplicationContext springContext) {
+        new JerseyBuilder(this.contextPath, this.port, this.jerseyServletUrlPattern, this.applicationClass, this.springContextConfigLocation, springContext)
     }
 
-    @Override
-    JettyServerBuilder atContextPath(String contextPath) {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    JerseyBuilder atContextPath(String contextPath) {
+        if (!contextPath.startsWith('/')) {
+            throw new IllegalArgumentException("Context path must start with a '/', was $contextPath")
+        }
+        new JerseyBuilder(contextPath, this.port, this.jerseyServletUrlPattern, this.applicationClass, this.springContextConfigLocation, this.springContext)
     }
 
-    @Override
-    JettyServerBuilder atRootContextPath() {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    JerseyBuilder atRootContextPath() {
+        new JerseyBuilder('/', this.port, this.jerseyServletUrlPattern, this.applicationClass, this.springContextConfigLocation, this.springContext)
     }
 
-    @Override
-    JettyServerBuilder onPort(int port) {
-        return null  //To change body of implemented methods use File | Settings | File Templates.
+    JerseyBuilder onPort(int port) {
+        new JerseyBuilder(this.contextPath, port, this.jerseyServletUrlPattern, this.applicationClass, this.springContextConfigLocation, this.springContext)
+    }
+
+    JerseyBuilder mappedTo(String jerseyServletUrlPattern) {
+        if (!jerseyServletUrlPattern.startsWith('/')) {
+            throw new IllegalArgumentException("A servlet mapping must start with a '/', was $jerseyServletUrlPattern")
+        }
+        new JerseyBuilder(this.contextPath, this.port, jerseyServletUrlPattern, this.applicationClass, this.springContextConfigLocation, this.springContext)
     }
 
     @Override
     Server server() {
         def server = new Server(port)
         def handler = new ServletContextHandler()
+        ServletHolder servletHolder
         if (applicationClass) {
-            handler.addServlet(new ServletHolder(new ServletContainer(applicationClass)), '/*')
+            servletHolder = new ServletHolder(new ServletContainer(applicationClass))
         } else if (springContextConfigLocation) {
             handler.addEventListener(new ContextLoaderListener())
             handler.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, springContextConfigLocation)
-            handler.addServlet(new ServletHolder(new SpringServlet()), '/*')
+            servletHolder = new ServletHolder(new SpringServlet())
         } else {
-            handler.addServlet(new ServletHolder(new ExistingContextSpringServlet(springContext)), '/*')
+            servletHolder = new ServletHolder(new ExistingContextSpringServlet(springContext))
         }
+        handler.addServlet(servletHolder, jerseyServletUrlPattern)
+        handler.setContextPath(contextPath)
         server.setHandler(handler)
         server.start()
         server
