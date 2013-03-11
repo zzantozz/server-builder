@@ -1,5 +1,5 @@
 package org.jettyserverbuilder
-import groovy.transform.TupleConstructor
+
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.ResourceHandler
@@ -9,19 +9,24 @@ import org.eclipse.jetty.server.handler.ResourceHandler
  * Date: 3/10/13
  * Time: 6:11 PM
  */
-@TupleConstructor
 class FileServerBuilder extends SimpleJettyServerBuilder {
-    final int port = 8080
     final String resourceBase
     final boolean directoriesListed = true
     final String[] welcomeFiles = []
 
-    static FileServerBuilder newFileServer(String resourceBase) {
-        new FileServerBuilder().withResourceBase(resourceBase)
+    FileServerBuilder(String resourceBase) {
+        this.resourceBase = resourceBase
     }
 
-    FileServerBuilder withResourceBase(String resourceBase) {
-        new FileServerBuilder(port, resourceBase, directoriesListed, welcomeFiles)
+    FileServerBuilder(int port, String resourceBase, boolean directoriesListed, String... welcomeFiles) {
+        super(port)
+        this.resourceBase = resourceBase
+        this.directoriesListed = directoriesListed
+        this.welcomeFiles = welcomeFiles
+    }
+
+    static FileServerBuilder newFileServer(String resourceBase) {
+        new FileServerBuilder(resourceBase)
     }
 
     FileServerBuilder withoutDirectoriesListed() {

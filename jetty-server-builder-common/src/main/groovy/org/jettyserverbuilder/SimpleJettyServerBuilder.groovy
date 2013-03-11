@@ -15,7 +15,11 @@ import org.eclipse.jetty.server.handler.DefaultHandler
  */
 @CompileStatic
 class SimpleJettyServerBuilder implements JettyServerBuilder {
-    int port = 8080
+    final int port
+
+    SimpleJettyServerBuilder(int port = 8080) {
+        this.port = port
+    }
 
     @Override
     WebResource jerseyResource() {

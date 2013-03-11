@@ -1,4 +1,5 @@
 package org.jettyserverbuilder
+
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
@@ -12,8 +13,19 @@ import org.eclipse.jetty.servlet.ServletHolder
  */
 class SimpleServletBasedJettyServerBuilder extends SimpleJettyServerBuilder
         implements ServletBasedJettyServerBuilder {
-    String contextPath = '/'
-    String urlPattern = '/*'
+    final String contextPath
+    final String urlPattern
+
+    SimpleServletBasedJettyServerBuilder(String contextPath = '/', String urlPattern = '/*') {
+        this.contextPath = contextPath
+        this.urlPattern = urlPattern
+    }
+
+    SimpleServletBasedJettyServerBuilder(int port, String contextPath = '/', String urlPattern = '/*') {
+        super(port)
+        this.contextPath = contextPath
+        this.urlPattern = urlPattern
+    }
 
     @Override
     Handler handler(Server server) {

@@ -20,63 +20,74 @@ import javax.ws.rs.core.Application
 @CompileStatic
 @TupleConstructor
 class JerseyBuilder extends SimpleServletBasedJettyServerBuilder {
-    final String contextPath = '/'
-    final int port = 8080
-    final String jerseyServletUrlPattern = '/*'
     final Class<? extends Application> applicationClass
     final String springContextConfigLocation
     final ConfigurableApplicationContext springContext
 
+    JerseyBuilder(Class<? extends Application> applicationClass) {
+        this.applicationClass = applicationClass
+    }
+
+    JerseyBuilder(String springContextConfigLocation) {
+        this.springContextConfigLocation = springContextConfigLocation
+    }
+
+    JerseyBuilder(ConfigurableApplicationContext springContext) {
+        this.springContext = springContext
+    }
+
+    JerseyBuilder(String contextPath, int port, String urlPattern, Class<? extends Application> applicationClass, String springContextConfigLocation, ConfigurableApplicationContext springContext) {
+        super(port, contextPath, urlPattern)
+        this.applicationClass = applicationClass
+        this.springContextConfigLocation = springContextConfigLocation
+        this.springContext = springContext
+    }
+
     static JerseyBuilder newJerseyServer(Class<? extends Application> applicationClass) {
-        new JerseyBuilder().withApplicationClass(applicationClass)
+        new JerseyBuilder(applicationClass)
     }
 
     static JerseyBuilder newJerseyServer(String springContextConfigLocation) {
-        new JerseyBuilder().withSpringContextConfigLocation(springContextConfigLocation)
+        new JerseyBuilder(springContextConfigLocation)
     }
 
     static JerseyBuilder newJerseyServer(ConfigurableApplicationContext springContext) {
-        new JerseyBuilder().withSpringContext(springContext)
+        new JerseyBuilder(springContext)
     }
 
     JerseyBuilder withApplicationClass(Class<? extends Application> applicationClass) {
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     JerseyBuilder withSpringContextConfigLocation(String springContextConfigLocation) {
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     JerseyBuilder withSpringContext(ConfigurableApplicationContext springContext) {
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     JerseyBuilder atContextPath(String contextPath) {
         if (!contextPath.startsWith('/')) {
             throw new IllegalArgumentException("Context path must start with a '/', was $contextPath")
         }
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     JerseyBuilder atRootContextPath() {
         def contextPath = '/'
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     JerseyBuilder onPort(int port) {
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
-    JerseyBuilder mappedTo(String jerseyServletUrlPattern) {
-        if (!jerseyServletUrlPattern.startsWith('/')) {
-            throw new IllegalArgumentException("A servlet mapping must start with a '/', was $jerseyServletUrlPattern")
+    JerseyBuilder mappedTo(String urlPattern) {
+        if (!urlPattern.startsWith('/')) {
+            throw new IllegalArgumentException("A servlet mapping must start with a '/', was $urlPattern")
         }
-        new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
-    }
-
-    @Override
-    String getUrlPattern() {
-        jerseyServletUrlPattern
+        new JerseyBuilder(contextPath, port, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
     @Override
