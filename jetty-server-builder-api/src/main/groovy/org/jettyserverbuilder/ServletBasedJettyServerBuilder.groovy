@@ -6,6 +6,7 @@ package org.jettyserverbuilder
  * Date: 3/10/13
  * Time: 7:02 PM
  */
-interface ServletBasedJettyServerBuilder {
+interface ServletBasedJettyServerBuilder extends JettyServerBuilder {
     String getContextPath()
+    String getUrlPattern()
 }

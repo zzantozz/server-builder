@@ -22,11 +22,11 @@ abstract class AbstractJettyServerBuilder implements JettyServerBuilder {
     Server server() {
         Server server = new Server(getPort())
         server.with {
-            handler = handler()
+            handler = handler(server)
             start()
         }
         server
     }
 
-    abstract Handler handler()
+    abstract Handler handler(Server server)
 }

@@ -1,10 +1,9 @@
 package org.jettyserverbuilder.springmvc
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
-import org.jettyserverbuilder.AbstractJettyServerBuilder
+import org.jettyserverbuilder.AbstractServletBasedJettyServerBuilder
 import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.servlet.DispatcherServlet
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.DispatcherServlet
  */
 @CompileStatic
 @TupleConstructor
-class SpringMvcBuilder extends AbstractJettyServerBuilder {
+class SpringMvcBuilder extends AbstractServletBasedJettyServerBuilder {
     final String contextPath = '/'
     final int port = 8080
     final WebApplicationContext rootContext
@@ -59,12 +58,13 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
     }
 
     @Override
-    Handler handler() {
-        def handler = new ServletContextHandler()
+    String getUrlPattern() {
+        dispatcherServletUrlPattern
+    }
+
+    @Override
+    ServletHolder servletHolder(ServletContextHandler handler) {
         if (rootContext) handler.addEventListener(new ContextLoaderListener(rootContext))
-        def servletHolder = new ServletHolder(new DispatcherServlet(dispatcherContext))
-        handler.addServlet(servletHolder, dispatcherServletUrlPattern)
-        handler.contextPath = contextPath
-        handler
+        new ServletHolder(new DispatcherServlet(dispatcherContext))
     }
 }

@@ -3,10 +3,9 @@ import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
-import org.jettyserverbuilder.AbstractJettyServerBuilder
+import org.jettyserverbuilder.AbstractServletBasedJettyServerBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.web.context.ContextLoader
 import org.springframework.web.context.ContextLoaderListener
@@ -20,7 +19,7 @@ import javax.ws.rs.core.Application
  */
 @CompileStatic
 @TupleConstructor
-class JerseyBuilder extends AbstractJettyServerBuilder {
+class JerseyBuilder extends AbstractServletBasedJettyServerBuilder {
     final String contextPath = '/'
     final int port = 8080
     final String jerseyServletUrlPattern = '/*'
@@ -75,21 +74,22 @@ class JerseyBuilder extends AbstractJettyServerBuilder {
         new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
-    Handler handler() {
-        def handler = new ServletContextHandler()
-        ServletHolder servletHolder
+    @Override
+    String getUrlPattern() {
+        jerseyServletUrlPattern
+    }
+
+    @Override
+    ServletHolder servletHolder(ServletContextHandler handler) {
         if (applicationClass) {
-            servletHolder = new ServletHolder(new ServletContainer(applicationClass))
+            new ServletHolder(new ServletContainer(applicationClass))
         } else if (springContextConfigLocation) {
             handler.addEventListener(new ContextLoaderListener())
             handler.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, springContextConfigLocation)
-            servletHolder = new ServletHolder(new SpringServlet())
+            new ServletHolder(new SpringServlet())
         } else {
-            servletHolder = new ServletHolder(new ExistingContextSpringServlet(springContext))
+            new ServletHolder(new ExistingContextSpringServlet(springContext))
         }
-        handler.addServlet(servletHolder, jerseyServletUrlPattern)
-        handler.contextPath = contextPath
-        handler
     }
 
     static class ExistingContextSpringServlet extends SpringServlet {
