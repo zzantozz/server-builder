@@ -12,7 +12,6 @@ import org.eclipse.jetty.server.Server
  */
 @CompileStatic
 public interface JettyServerBuilder {
-    String getContextPath()
     int getPort()
     WebResource jerseyResource()
     Server server()

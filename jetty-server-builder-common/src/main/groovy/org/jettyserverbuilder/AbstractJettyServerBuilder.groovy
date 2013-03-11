@@ -13,6 +13,6 @@ import groovy.transform.CompileStatic
 @CompileStatic
 abstract class AbstractJettyServerBuilder implements JettyServerBuilder {
     WebResource jerseyResource() {
-        Client.create().resource("http://localhost:${getPort()}").path(getContextPath())
+        Client.create().resource("http://localhost:${getPort()}")
     }
 }
