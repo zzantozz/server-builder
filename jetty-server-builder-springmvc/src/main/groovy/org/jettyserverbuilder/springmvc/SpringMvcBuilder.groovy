@@ -21,7 +21,7 @@ class SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder {
         this.dispatcherContext = dispatcherContext
     }
 
-    SpringMvcBuilder(String contextPath, int port, WebApplicationContext rootContext, WebApplicationContext dispatcherContext, String urlPattern) {
+    SpringMvcBuilder(int port, String contextPath, String urlPattern, WebApplicationContext rootContext, WebApplicationContext dispatcherContext) {
         super(port, contextPath, urlPattern)
         this.rootContext = rootContext
         this.dispatcherContext = dispatcherContext
@@ -32,30 +32,30 @@ class SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder {
     }
 
     SpringMvcBuilder withRootContext(WebApplicationContext rootContext) {
-        new SpringMvcBuilder(contextPath, port, rootContext, dispatcherContext, urlPattern)
+        new SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     SpringMvcBuilder atContextPath(String contextPath) {
         if (!contextPath.startsWith('/')) {
             throw new IllegalArgumentException("Context path must start with a '/', was $contextPath")
         }
-        new SpringMvcBuilder(contextPath, port, rootContext, dispatcherContext, urlPattern)
+        new SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     SpringMvcBuilder atRootContextPath() {
         def contextPath = '/'
-        new SpringMvcBuilder(contextPath, port, rootContext, dispatcherContext, urlPattern)
+        new SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     SpringMvcBuilder mappedTo(String urlPattern) {
         if (!urlPattern.startsWith('/')) {
             throw new IllegalArgumentException("A servlet mapping must start with a '/', was $urlPattern")
         }
-        new SpringMvcBuilder(contextPath, port, rootContext, dispatcherContext, urlPattern)
+        new SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     SpringMvcBuilder onPort(int port) {
-        new SpringMvcBuilder(contextPath, port, rootContext, dispatcherContext, urlPattern)
+        new SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     @Override
