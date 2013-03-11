@@ -3,7 +3,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.jettyserverbuilder.AbstractJettyServerBuilder
@@ -75,9 +75,7 @@ class JerseyBuilder extends AbstractJettyServerBuilder {
         new JerseyBuilder(contextPath, port, jerseyServletUrlPattern, applicationClass, springContextConfigLocation, springContext)
     }
 
-    @Override
-    Server server() {
-        def server = new Server(port)
+    Handler handler() {
         def handler = new ServletContextHandler()
         ServletHolder servletHolder
         if (applicationClass) {
@@ -91,9 +89,7 @@ class JerseyBuilder extends AbstractJettyServerBuilder {
         }
         handler.addServlet(servletHolder, jerseyServletUrlPattern)
         handler.contextPath = contextPath
-        server.handler = handler
-        server.start()
-        server
+        handler
     }
 
     static class ExistingContextSpringServlet extends SpringServlet {

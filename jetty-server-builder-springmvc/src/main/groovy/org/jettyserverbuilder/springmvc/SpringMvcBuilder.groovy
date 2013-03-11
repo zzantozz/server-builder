@@ -1,8 +1,7 @@
 package org.jettyserverbuilder.springmvc
-
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.jettyserverbuilder.AbstractJettyServerBuilder
@@ -60,15 +59,12 @@ class SpringMvcBuilder extends AbstractJettyServerBuilder {
     }
 
     @Override
-    Server server() {
-        def server = new Server(port)
+    Handler handler() {
         def handler = new ServletContextHandler()
         if (rootContext) handler.addEventListener(new ContextLoaderListener(rootContext))
         def servletHolder = new ServletHolder(new DispatcherServlet(dispatcherContext))
         handler.addServlet(servletHolder, dispatcherServletUrlPattern)
         handler.contextPath = contextPath
-        server.handler = handler
-        server.start()
-        server
+        handler
     }
 }

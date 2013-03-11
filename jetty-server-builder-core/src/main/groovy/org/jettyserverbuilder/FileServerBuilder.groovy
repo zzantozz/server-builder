@@ -1,7 +1,6 @@
 package org.jettyserverbuilder
-
 import groovy.transform.TupleConstructor
-import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.handler.ResourceHandler
 /**
  * Created with IntelliJ IDEA.
@@ -38,16 +37,12 @@ class FileServerBuilder extends AbstractJettyServerBuilder {
     }
 
     @Override
-    Server server() {
-        def resourceHandler = new ResourceHandler()
-        resourceHandler.with {
+    Handler handler() {
+        new ResourceHandler().with {
             it.directoriesListed = this.directoriesListed
             it.welcomeFiles = this.welcomeFiles
             it.resourceBase = this.resourceBase
+            return it
         }
-        def server = new Server(port)
-        server.handler = resourceHandler
-        server.start()
-        server
     }
 }
