@@ -5,6 +5,7 @@ import com.sun.jersey.api.client.WebResource
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.handler.DefaultHandler
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +14,10 @@ import org.eclipse.jetty.server.Server
  * Time: 2:17 PM
  */
 @CompileStatic
-abstract class AbstractJettyServerBuilder implements JettyServerBuilder {
+class SimpleJettyServerBuilder implements JettyServerBuilder {
+    int port = 8080
+
+    @Override
     WebResource jerseyResource() {
         Client.create().resource("http://localhost:${getPort()}")
     }
@@ -28,5 +32,7 @@ abstract class AbstractJettyServerBuilder implements JettyServerBuilder {
         server
     }
 
-    abstract Handler handler(Server server)
+    Handler handler(Server server) {
+        new DefaultHandler()
+    }
 }

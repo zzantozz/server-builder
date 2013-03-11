@@ -10,15 +10,20 @@ import org.eclipse.jetty.servlet.ServletHolder
  * Date: 3/10/13
  * Time: 7:41 PM
  */
-abstract class AbstractServletBasedJettyServerBuilder extends AbstractJettyServerBuilder
+class SimpleServletBasedJettyServerBuilder extends SimpleJettyServerBuilder
         implements ServletBasedJettyServerBuilder {
+    String contextPath = '/'
+    String urlPattern = '/*'
+
     @Override
     Handler handler(Server server) {
         def handler = new ServletContextHandler()
-        handler.contextPath = contextPath
+        handler.contextPath = getContextPath()
         handler.addServlet(servletHolder(handler), getUrlPattern())
         handler
     }
 
-    abstract ServletHolder servletHolder(ServletContextHandler handler)
+    ServletHolder servletHolder(ServletContextHandler handler) {
+        new ServletHolder()
+    }
 }

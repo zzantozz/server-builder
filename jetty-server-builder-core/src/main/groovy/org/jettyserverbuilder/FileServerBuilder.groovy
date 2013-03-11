@@ -10,7 +10,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler
  * Time: 6:11 PM
  */
 @TupleConstructor
-class FileServerBuilder extends AbstractJettyServerBuilder {
+class FileServerBuilder extends SimpleJettyServerBuilder {
     final int port = 8080
     final String resourceBase
     final boolean directoriesListed = true

@@ -3,7 +3,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
-import org.jettyserverbuilder.AbstractServletBasedJettyServerBuilder
+import org.jettyserverbuilder.SimpleServletBasedJettyServerBuilder
 import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.servlet.DispatcherServlet
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.DispatcherServlet
  */
 @CompileStatic
 @TupleConstructor
-class SpringMvcBuilder extends AbstractServletBasedJettyServerBuilder {
+class SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder {
     final String contextPath = '/'
     final int port = 8080
     final WebApplicationContext rootContext

@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
-import org.jettyserverbuilder.AbstractServletBasedJettyServerBuilder
+import org.jettyserverbuilder.SimpleServletBasedJettyServerBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.web.context.ContextLoader
 import org.springframework.web.context.ContextLoaderListener
@@ -19,7 +19,7 @@ import javax.ws.rs.core.Application
  */
 @CompileStatic
 @TupleConstructor
-class JerseyBuilder extends AbstractServletBasedJettyServerBuilder {
+class JerseyBuilder extends SimpleServletBasedJettyServerBuilder {
     final String contextPath = '/'
     final int port = 8080
     final String jerseyServletUrlPattern = '/*'
