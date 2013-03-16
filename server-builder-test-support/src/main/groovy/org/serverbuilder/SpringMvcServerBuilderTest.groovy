@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
  * Date: 3/9/13
  * Time: 9:05 AM
  */
-class SpringMvcServerBuilderTest<T> {
+abstract class SpringMvcServerBuilderTest<T> {
     @Controller
     static class TestController {
         TestService service

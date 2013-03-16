@@ -9,7 +9,7 @@ import org.junit.Test
  * Date: 3/10/13
  * Time: 6:10 PM
  */
-class FileServerBuilderTest<T> {
+abstract class FileServerBuilderTest<T> {
     File baseDirectory = File.createTempFile("file-server-builder-test-", null).with {
         if(!(it.delete() && it.mkdir())) {
             throw new IllegalStateException("Failed to obtain a temporary directory")

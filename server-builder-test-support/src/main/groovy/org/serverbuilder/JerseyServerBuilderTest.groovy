@@ -18,7 +18,7 @@ import javax.ws.rs.core.Application
  * Date: 3/9/13
  * Time: 6:14 PM
  */
-class JerseyServerBuilderTest<T> {
+abstract class JerseyServerBuilderTest<T> {
     static class TestApplication extends Application {
         Set getClasses() { [TestResource] }
     }
