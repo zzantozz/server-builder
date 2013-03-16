@@ -1,5 +1,6 @@
 package org.serverbuilder
 import groovy.transform.CompileStatic
+import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.springframework.web.context.ContextLoaderListener
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.DispatcherServlet
  * Time: 11:04 AM
  */
 @CompileStatic
-class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder implements SpringMvcServerBuilder {
+class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8SpringMvcBuilder> implements SpringMvcServerBuilder<Server> {
     final WebApplicationContext rootContext
     final WebApplicationContext dispatcherContext
 
@@ -28,6 +29,12 @@ class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder implem
 
     static Jetty8SpringMvcBuilder newSpringMvcServer(WebApplicationContext dispatcherContext) {
         new Jetty8SpringMvcBuilder(dispatcherContext)
+    }
+
+    @Override
+    SpringMvcServerBuilder<Server> withDispatcherContext(WebApplicationContext dispatcherContext) {
+        // TODO: Write me!
+        throw new UnsupportedOperationException("Write me! - org.serverbuilder.SpringMvcServerBuilder.withDispatcherContext")
     }
 
     Jetty8SpringMvcBuilder withRootContext(WebApplicationContext rootContext) {

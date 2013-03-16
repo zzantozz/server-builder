@@ -10,7 +10,7 @@ import groovy.transform.CompileStatic
  * Time: 11:06 AM
  */
 @CompileStatic
-public interface ServerBuilder<ServerType, BuilderType extends
+interface ServerBuilder<ServerType, BuilderType extends
         ServerBuilder<ServerType, BuilderType>> {
     BuilderType onPort(int port)
     WebResource jerseyResource()

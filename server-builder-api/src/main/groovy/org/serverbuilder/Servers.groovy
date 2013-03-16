@@ -1,5 +1,6 @@
 package org.serverbuilder
 
+import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Server
 
 /**
@@ -8,6 +9,7 @@ import org.eclipse.jetty.server.Server
  * Date: 3/15/13
  * Time: 7:58 PM
  */
+@CompileStatic
 class Servers {
     static ServerBuilders<Server> jetty7() {
         null

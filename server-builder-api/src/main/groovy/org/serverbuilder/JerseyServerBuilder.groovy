@@ -1,5 +1,6 @@
 package org.serverbuilder
 
+import groovy.transform.CompileStatic
 import org.springframework.context.ConfigurableApplicationContext
 
 import javax.ws.rs.core.Application
@@ -10,7 +11,8 @@ import javax.ws.rs.core.Application
  * Date: 3/14/13
  * Time: 11:04 PM
  */
-public interface JerseyServerBuilder<ServerType> extends
+@CompileStatic
+interface JerseyServerBuilder<ServerType> extends
         ServletBasedServerBuilder<ServerType, JerseyServerBuilder<ServerType>> {
     JerseyServerBuilder<ServerType> withApplicationClass(Class<? extends Application> applicationClass)
     JerseyServerBuilder<ServerType> withSpringContextConfigLocation(String springContextConfigLocation)

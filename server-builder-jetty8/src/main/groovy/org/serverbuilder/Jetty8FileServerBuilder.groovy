@@ -1,5 +1,6 @@
 package org.serverbuilder
 
+import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.ResourceHandler
@@ -9,7 +10,8 @@ import org.eclipse.jetty.server.handler.ResourceHandler
  * Date: 3/10/13
  * Time: 6:11 PM
  */
-class Jetty8FileServerBuilder extends SimpleJettyServerBuilder implements FileServerBuilder<Server> {
+@CompileStatic
+class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<Jetty8FileServerBuilder> implements FileServerBuilder<Server> {
     final String resourceBase
     final boolean directoriesListed = true
     final String[] welcomeFiles = []
@@ -29,6 +31,12 @@ class Jetty8FileServerBuilder extends SimpleJettyServerBuilder implements FileSe
         new Jetty8FileServerBuilder(resourceBase)
     }
 
+    @Override
+    FileServerBuilder<Server> atResourceBase(String resourceBase) {
+        // TODO: Write me!
+        throw new UnsupportedOperationException("Write me! - org.serverbuilder.FileServerBuilder.atResourceBase")
+    }
+
     Jetty8FileServerBuilder withoutDirectoriesListed() {
         def directoriesListed = false
         new Jetty8FileServerBuilder(port, resourceBase, directoriesListed, welcomeFiles)
@@ -38,7 +46,7 @@ class Jetty8FileServerBuilder extends SimpleJettyServerBuilder implements FileSe
         new Jetty8FileServerBuilder(port, resourceBase, directoriesListed, welcomeFiles)
     }
 
-    Object onPort(int port) {
+    Jetty8FileServerBuilder onPort(int port) {
         new Jetty8FileServerBuilder(port, resourceBase, directoriesListed, welcomeFiles)
     }
 

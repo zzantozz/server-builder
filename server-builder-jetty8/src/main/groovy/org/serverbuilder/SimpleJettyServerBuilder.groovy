@@ -14,11 +14,19 @@ import org.eclipse.jetty.server.handler.DefaultHandler
  * Time: 2:17 PM
  */
 @CompileStatic
-class SimpleJettyServerBuilder implements ServerBuilder {
+class SimpleJettyServerBuilder<BuilderType extends SimpleJettyServerBuilder<BuilderType>>
+        implements ServerBuilder<Server, BuilderType> {
+
     final int port
 
     SimpleJettyServerBuilder(int port = 8080) {
         this.port = port
+    }
+
+    @Override
+    BuilderType onPort(int port) {
+        // TODO: Write me!
+        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServerBuilder.onPort")
     }
 
     @Override
@@ -27,13 +35,19 @@ class SimpleJettyServerBuilder implements ServerBuilder {
     }
 
     @Override
-    Server server() {
+    Server build() {
         Server server = new Server(getPort())
         server.with {
             handler = handler(server)
             start()
         }
         server
+    }
+
+    @Override
+    void stop(Server server) {
+        // TODO: Write me!
+        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServerBuilder.stop")
     }
 
     Handler handler(Server server) {

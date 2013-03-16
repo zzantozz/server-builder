@@ -1,8 +1,9 @@
 package org.serverbuilder
+
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
+import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.springframework.context.ConfigurableApplicationContext
@@ -10,6 +11,7 @@ import org.springframework.web.context.ContextLoader
 import org.springframework.web.context.ContextLoaderListener
 
 import javax.ws.rs.core.Application
+
 /**
  * Created with IntelliJ IDEA.
  * User: ryan
@@ -17,7 +19,7 @@ import javax.ws.rs.core.Application
  * Time: 6:21 PM
  */
 @CompileStatic
-class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder implements JerseyServerBuilder {
+class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8JerseyServerBuilder> implements JerseyServerBuilder<Server> {
     final Class<? extends Application> applicationClass
     final String springContextConfigLocation
     final ConfigurableApplicationContext springContext
