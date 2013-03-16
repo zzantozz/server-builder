@@ -52,11 +52,12 @@ class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<Jetty8FileServerB
 
     @Override
     Handler handler(Server server) {
-        new ResourceHandler().with {
+        def handler = new ResourceHandler()
+        handler.with {
             it.directoriesListed = this.directoriesListed
             it.welcomeFiles = this.welcomeFiles
             it.resourceBase = this.resourceBase
-            return it
         }
+        handler
     }
 }

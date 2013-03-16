@@ -82,7 +82,7 @@ class SpringMvcServerBuilderTest<T> {
     }
 
     @Test
-    void 'supports typical parent/child spring mvc apps'() {
+    void 'supports typical parent-child spring mvc apps'() {
         verify builder.withDispatcherContext(onlyDispatcherBeans)
                 .withRootContext(onlyRootBeans)
     }
