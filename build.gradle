@@ -84,7 +84,6 @@ project('server-builder-jetty8') {
     dependencies {
         compile(
                 project(':server-builder-api'),
-                project(':server-builder-test-support'),
                 'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
                 'org.springframework:spring-webmvc:3.2.1.RELEASE',
                 'org.springframework:spring-web:3.2.1.RELEASE',
@@ -97,6 +96,28 @@ project('server-builder-jetty8') {
                 'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
         )
         testCompile(
+                project(':server-builder-test-support'),
+        )
+    }
+}
+
+project('server-builder-jetty7') {
+    dependencies {
+        compile(
+            project(':server-builder-api'),
+            'org.eclipse.jetty:jetty-servlet:7.6.10.v20130312',
+            'org.springframework:spring-webmvc:3.2.1.RELEASE',
+            'org.springframework:spring-web:3.2.1.RELEASE',
+            'org.springframework:spring-context:3.2.1.RELEASE',
+            'org.springframework:spring-beans:3.2.1.RELEASE',
+            'com.sun.jersey:jersey-server:1.17',
+            'com.sun.jersey:jersey-servlet:1.17',
+            'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
+            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey-server
+            'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
+        )
+        testCompile(
+            project(':server-builder-test-support'),
         )
     }
 }

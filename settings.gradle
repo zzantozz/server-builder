@@ -1,2 +1,5 @@
 rootProject.name = 'server-builder'
-include 'server-builder-api', 'server-builder-core', 'server-builder-test-support', 'server-builder-jetty8'
+// Core modules
+include 'server-builder-api', 'server-builder-core', 'server-builder-test-support'
+// Implementation modules
+include 'server-builder-jetty8', 'server-builder-jetty7'
