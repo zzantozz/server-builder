@@ -1,7 +1,5 @@
 package org.jettyserverbuilder
-
 import com.sun.jersey.api.client.Client
-import org.eclipse.jetty.server.Server
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -15,14 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
-
 /**
  * Created with IntelliJ IDEA.
  * User: ryan
  * Date: 3/9/13
  * Time: 9:05 AM
  */
-class SpringMvcServerBuilderTest {
+class SpringMvcServerBuilderTest<T> {
     @Controller
     static class TestController {
         TestService service
@@ -32,17 +29,20 @@ class SpringMvcServerBuilderTest {
     }
 
     @Service
+    @SuppressWarnings("GrMethodMayBeStatic")
     static class TestService {
         String sayHi() { 'Service says hi!' }
     }
 
     @Configuration
+    @SuppressWarnings("GrMethodMayBeStatic")
     static class RootBeans {
         @Bean TestService service() { new TestService() }
     }
 
     @Configuration
     @EnableWebMvc
+    @SuppressWarnings("GrMethodMayBeStatic")
     static class DispatcherBeans {
         @Bean TestController controller(TestService service) { new TestController([service: service]) }
     }
@@ -64,40 +64,45 @@ class SpringMvcServerBuilderTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none()
-    Server thisTestServer
+    SpringMvcServerBuilder<T> builder
+    T thisTestServer
+
+    SpringMvcServerBuilderTest(ServerBuilders<T> builders) {
+        this.builder = builders.newSpringMvcServer()
+    }
 
     @After
     void tearDown() {
-        thisTestServer?.stop()
+        builder.stop(thisTestServer)
     }
 
     @Test
     void 'a bare-minimum builder creates a working server'() {
-        verify Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans)
+        verify builder.withDispatcherContext(dispatcherAndRootBeans)
     }
 
     @Test
     void 'supports typical parent/child spring mvc apps'() {
-        verify Jetty8SpringMvcBuilder.newSpringMvcServer(onlyDispatcherBeans)
+        verify builder.withDispatcherContext(onlyDispatcherBeans)
                 .withRootContext(onlyRootBeans)
     }
 
     @Test
     void 'supports spring mvc apps without a root context'() {
-        verify Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans)
+        verify builder.withDispatcherContext(dispatcherAndRootBeans)
     }
 
     @Test
     void 'supports running on specific ports'() {
-        def builder = Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).onPort(10101)
-        thisTestServer = builder.server()
+        def builder = builder.withDispatcherContext(dispatcherAndRootBeans).onPort(10101)
+        thisTestServer = builder.build()
         assert Client.create().resource('http://localhost:10101/sayHi').get(String) == 'Service says hi!'
     }
 
     @Test
     void 'supports running with a specific context path'() {
-        def builder = Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).atContextPath('/testContextPath/path2')
-        thisTestServer = builder.server()
+        def builder = builder.withDispatcherContext(dispatcherAndRootBeans).atContextPath('/testContextPath/path2')
+        thisTestServer = builder.build()
         assert Client.create().resource("http://localhost:$builder.port/testContextPath/path2/sayHi").get(String) ==
                 'Service says hi!'
     }
@@ -105,18 +110,18 @@ class SpringMvcServerBuilderTest {
     @Test
     void 'fails on setting a context path without a leading slash'() {
         expectedException.expect(IllegalArgumentException)
-        Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).atContextPath('noLeadingSlash')
+        builder.withDispatcherContext(dispatcherAndRootBeans).atContextPath('noLeadingSlash')
     }
 
     @Test
     void 'supports running at the root context'() {
-        verify Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).atRootContextPath()
+        verify builder.withDispatcherContext(dispatcherAndRootBeans).atRootContextPath()
     }
 
     @Test
     void 'supports running at a specific servlet path'() {
-        def builder = Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).mappedTo('/testServletPath/path2/*')
-        thisTestServer = builder.server()
+        def builder = builder.withDispatcherContext(dispatcherAndRootBeans).mappedTo('/testServletPath/path2/*')
+        thisTestServer = builder.build()
         assert Client.create().resource("http://localhost:$builder.port/testServletPath/path2/sayHi").get(String) ==
                 'Service says hi!'
     }
@@ -124,11 +129,11 @@ class SpringMvcServerBuilderTest {
     @Test
     void 'fails on setting a servlet path without a leading slash'() {
         expectedException.expect(IllegalArgumentException)
-        Jetty8SpringMvcBuilder.newSpringMvcServer(dispatcherAndRootBeans).mappedTo('noLeadingSlash')
+        builder.withDispatcherContext(dispatcherAndRootBeans).mappedTo('noLeadingSlash')
     }
 
-    void verify(Jetty8SpringMvcBuilder builder) {
-        thisTestServer = builder.server()
+    void verify(SpringMvcServerBuilder<T> builder) {
+        thisTestServer = builder.build()
         def response = builder.jerseyResource().path('sayHi').get(String)
         assert response == 'Service says hi!'
     }

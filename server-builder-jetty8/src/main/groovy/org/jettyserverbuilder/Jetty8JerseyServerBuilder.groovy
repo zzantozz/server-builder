@@ -17,7 +17,6 @@ import javax.ws.rs.core.Application
  * Time: 6:21 PM
  */
 @CompileStatic
-@TupleConstructor
 class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder implements JerseyServerBuilder {
     final Class<? extends Application> applicationClass
     final String springContextConfigLocation
