@@ -2,6 +2,7 @@ package org.serverbuilder
 
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Server
+import org.serverbuilder.jetty8.Jetty8ServerBuilders
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +17,6 @@ class Servers {
     }
 
     static ServerBuilders<Server> jetty8() {
-        null
+        new Jetty8ServerBuilders()
     }
 }

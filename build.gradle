@@ -39,10 +39,24 @@ project('server-builder-api') {
     }
 }
 
+project('server-builder-core') {
+    dependencies {
+        compile(
+            project(':server-builder-api'),
+            // This shouldn't be a dependency here or should be an optional/provided one. For now, it's letting me
+            // run the tests.
+            project(':server-builder-jetty8'),
+        )
+        testCompile(
+        )
+    }
+}
+
 project('server-builder-test-support') {
     dependencies {
         compile(
             project(':server-builder-api'),
+            project(':server-builder-core'),
             'org.spockframework:spock-core:0.7-groovy-2.0',
             'com.sun.jersey:jersey-client:1.17', // Just a convenient HTTP client to test with
             'com.sun.jersey:jersey-core:1.17', // Needed for jersey client

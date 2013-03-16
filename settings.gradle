@@ -1,2 +1,2 @@
 rootProject.name = 'server-builder'
-include 'server-builder-api', 'server-builder-test-support', 'server-builder-jetty8'
+include 'server-builder-api', 'server-builder-core', 'server-builder-test-support', 'server-builder-jetty8'

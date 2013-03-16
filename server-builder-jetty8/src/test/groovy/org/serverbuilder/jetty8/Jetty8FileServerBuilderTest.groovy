@@ -2,7 +2,6 @@ package org.serverbuilder.jetty8
 
 import org.eclipse.jetty.server.Server
 import org.serverbuilder.FileServerBuilderTest
-import org.serverbuilder.ServerBuilders
 import org.serverbuilder.Servers
 
 /**
@@ -12,7 +11,7 @@ import org.serverbuilder.Servers
  * Time: 8:24 AM
  */
 class Jetty8FileServerBuilderTest extends FileServerBuilderTest<Server> {
-    Jetty8FileServerBuilderTest(ServerBuilders<Server> builders) {
+    Jetty8FileServerBuilderTest() {
         super(Servers.jetty8())
     }
 }
