@@ -30,11 +30,12 @@ class FileServerBuilderTest<T> {
 
     FileServerBuilderTest(ServerBuilders<T> builders) {
         this.builder = builders.newFileServer()
+        assert this.builder, "A builder is required to run tests against"
     }
 
     @After
     void tearDown() {
-        builder.stop(thisTestServer)
+        if (thisTestServer) builder?.stop(thisTestServer)
     }
 
     @Test

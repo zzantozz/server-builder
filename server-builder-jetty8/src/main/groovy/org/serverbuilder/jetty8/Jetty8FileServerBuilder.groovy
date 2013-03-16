@@ -14,13 +14,11 @@ import org.serverbuilder.FileServerBuilder
  */
 @CompileStatic
 class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<Jetty8FileServerBuilder> implements FileServerBuilder<Server> {
-    final String resourceBase
+    final String resourceBase = '.'
     final boolean directoriesListed = true
     final String[] welcomeFiles = []
 
-    Jetty8FileServerBuilder(String resourceBase) {
-        this.resourceBase = resourceBase
-    }
+    Jetty8FileServerBuilder() {}
 
     Jetty8FileServerBuilder(int port, String resourceBase, boolean directoriesListed, String... welcomeFiles) {
         super(port)
@@ -29,14 +27,8 @@ class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<Jetty8FileServerB
         this.welcomeFiles = welcomeFiles
     }
 
-    static Jetty8FileServerBuilder newFileServer(String resourceBase) {
-        new Jetty8FileServerBuilder(resourceBase)
-    }
-
-    @Override
-    FileServerBuilder<Server> atResourceBase(String resourceBase) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.FileServerBuilder.atResourceBase")
+    Jetty8FileServerBuilder atResourceBase(String resourceBase) {
+        new Jetty8FileServerBuilder(port, resourceBase, directoriesListed, welcomeFiles)
     }
 
     Jetty8FileServerBuilder withoutDirectoriesListed() {

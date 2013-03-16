@@ -14,7 +14,7 @@ import org.serverbuilder.ServletBasedServerBuilder
  * Time: 7:41 PM
  */
 @CompileStatic
-class SimpleServletBasedJettyServerBuilder<BuilderType extends SimpleServletBasedJettyServerBuilder<BuilderType>>
+abstract class SimpleServletBasedJettyServerBuilder<BuilderType extends SimpleServletBasedJettyServerBuilder<BuilderType>>
         extends SimpleJettyServerBuilder<BuilderType>
         implements ServletBasedServerBuilder<Server, BuilderType> {
     final String contextPath
@@ -29,24 +29,6 @@ class SimpleServletBasedJettyServerBuilder<BuilderType extends SimpleServletBase
         super(port)
         this.contextPath = contextPath
         this.urlPattern = urlPattern
-    }
-
-    @Override
-    BuilderType atContextPath(String contextPath) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServletBasedServerBuilder.atContextPath")
-    }
-
-    @Override
-    BuilderType atRootContextPath() {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServletBasedServerBuilder.atRootContextPath")
-    }
-
-    @Override
-    BuilderType mappedTo(String urlPattern) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServletBasedServerBuilder.mappedTo")
     }
 
     @Override

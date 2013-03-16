@@ -69,11 +69,12 @@ class SpringMvcServerBuilderTest<T> {
 
     SpringMvcServerBuilderTest(ServerBuilders<T> builders) {
         this.builder = builders.newSpringMvcServer()
+        assert this.builder, "A builder is required to run tests against"
     }
 
     @After
     void tearDown() {
-        builder.stop(thisTestServer)
+        if (thisTestServer) builder?.stop(thisTestServer)
     }
 
     @Test

@@ -18,8 +18,7 @@ class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8
     final WebApplicationContext rootContext
     final WebApplicationContext dispatcherContext
 
-    Jetty8SpringMvcBuilder(WebApplicationContext dispatcherContext) {
-        this.dispatcherContext = dispatcherContext
+    Jetty8SpringMvcBuilder() {
     }
 
     Jetty8SpringMvcBuilder(int port, String contextPath, String urlPattern, WebApplicationContext rootContext, WebApplicationContext dispatcherContext) {
@@ -28,14 +27,8 @@ class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8
         this.dispatcherContext = dispatcherContext
     }
 
-    static Jetty8SpringMvcBuilder newSpringMvcServer(WebApplicationContext dispatcherContext) {
-        new Jetty8SpringMvcBuilder(dispatcherContext)
-    }
-
-    @Override
     SpringMvcServerBuilder<Server> withDispatcherContext(WebApplicationContext dispatcherContext) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.SpringMvcServerBuilder.withDispatcherContext")
+        new Jetty8SpringMvcBuilder(port, contextPath, urlPattern, rootContext, dispatcherContext)
     }
 
     Jetty8SpringMvcBuilder withRootContext(WebApplicationContext rootContext) {

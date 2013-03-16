@@ -38,11 +38,12 @@ class JerseyServerBuilderTest<T> {
 
     JerseyServerBuilderTest(ServerBuilders builders) {
         this.builder = builders.newJerseyServer()
+        assert this.builder, "A builder is required to run tests against"
     }
 
     @After
     void tearDown() {
-        builder.stop(thisTestServer)
+        if (thisTestServer) builder?.stop(thisTestServer)
     }
 
     @Test
@@ -116,7 +117,7 @@ class JerseyServerBuilderTest<T> {
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="
                        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-                <bean class="org.serverbuilder.jersey.ModuleTest.TestResource" scope="singleton"/>
+                <bean class="org.serverbuilder.JerseyServerBuilderTest.TestResource" scope="singleton"/>
             </beans>
             """.stripIndent()
             return it

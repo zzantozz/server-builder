@@ -15,19 +15,13 @@ import org.serverbuilder.ServerBuilder
  * Time: 2:17 PM
  */
 @CompileStatic
-class SimpleJettyServerBuilder<BuilderType extends SimpleJettyServerBuilder<BuilderType>>
+abstract class SimpleJettyServerBuilder<BuilderType extends SimpleJettyServerBuilder<BuilderType>>
         implements ServerBuilder<Server, BuilderType> {
 
     final int port
 
     SimpleJettyServerBuilder(int port = 8080) {
         this.port = port
-    }
-
-    @Override
-    BuilderType onPort(int port) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServerBuilder.onPort")
     }
 
     @Override
@@ -47,8 +41,7 @@ class SimpleJettyServerBuilder<BuilderType extends SimpleJettyServerBuilder<Buil
 
     @Override
     void stop(Server server) {
-        // TODO: Write me!
-        throw new UnsupportedOperationException("Write me! - org.serverbuilder.ServerBuilder.stop")
+        server.stop()
     }
 
     Handler handler(Server server) {

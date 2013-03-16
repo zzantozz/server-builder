@@ -25,16 +25,7 @@ class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<Jet
     final String springContextConfigLocation
     final ConfigurableApplicationContext springContext
 
-    Jetty8JerseyServerBuilder(Class<? extends Application> applicationClass) {
-        this.applicationClass = applicationClass
-    }
-
-    Jetty8JerseyServerBuilder(String springContextConfigLocation) {
-        this.springContextConfigLocation = springContextConfigLocation
-    }
-
-    Jetty8JerseyServerBuilder(ConfigurableApplicationContext springContext) {
-        this.springContext = springContext
+    Jetty8JerseyServerBuilder() {
     }
 
     Jetty8JerseyServerBuilder(int port, String contextPath, String urlPattern, Class<? extends Application> applicationClass, String springContextConfigLocation, ConfigurableApplicationContext springContext) {
@@ -42,18 +33,6 @@ class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<Jet
         this.applicationClass = applicationClass
         this.springContextConfigLocation = springContextConfigLocation
         this.springContext = springContext
-    }
-
-    static Jetty8JerseyServerBuilder newJerseyServer(Class<? extends Application> applicationClass) {
-        new Jetty8JerseyServerBuilder(applicationClass)
-    }
-
-    static Jetty8JerseyServerBuilder newJerseyServer(String springContextConfigLocation) {
-        new Jetty8JerseyServerBuilder(springContextConfigLocation)
-    }
-
-    static Jetty8JerseyServerBuilder newJerseyServer(ConfigurableApplicationContext springContext) {
-        new Jetty8JerseyServerBuilder(springContext)
     }
 
     Jetty8JerseyServerBuilder withApplicationClass(Class<? extends Application> applicationClass) {
@@ -86,7 +65,7 @@ class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<Jet
 
     Jetty8JerseyServerBuilder mappedTo(String urlPattern) {
         if (!urlPattern.startsWith('/')) {
-            throw new IllegalArgumentException("A servlet mapping must start with a '/', was $urlPattern")
+            throw new IllegalArgumentException("A servlet url-pattern must start with a '/', was $urlPattern")
         }
         new Jetty8JerseyServerBuilder(port, contextPath, urlPattern, applicationClass, springContextConfigLocation, springContext)
     }
