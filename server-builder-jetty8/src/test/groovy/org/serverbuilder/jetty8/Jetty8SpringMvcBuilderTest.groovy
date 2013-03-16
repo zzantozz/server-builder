@@ -1,6 +1,8 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 
 import org.eclipse.jetty.server.Server
+import org.serverbuilder.Servers
+import org.serverbuilder.SpringMvcServerBuilderTest
 
 /**
  * Created with IntelliJ IDEA.

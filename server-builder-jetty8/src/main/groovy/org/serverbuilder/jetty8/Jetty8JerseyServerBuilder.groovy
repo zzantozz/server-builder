@@ -1,4 +1,4 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import org.serverbuilder.JerseyServerBuilder
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.web.context.ContextLoader
 import org.springframework.web.context.ContextLoaderListener

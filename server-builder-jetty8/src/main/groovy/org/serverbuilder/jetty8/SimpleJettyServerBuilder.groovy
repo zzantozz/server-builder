@@ -1,4 +1,4 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.WebResource
@@ -6,6 +6,7 @@ import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.DefaultHandler
+import org.serverbuilder.ServerBuilder
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,8 +1,9 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import org.serverbuilder.SpringMvcServerBuilder
 import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.servlet.DispatcherServlet

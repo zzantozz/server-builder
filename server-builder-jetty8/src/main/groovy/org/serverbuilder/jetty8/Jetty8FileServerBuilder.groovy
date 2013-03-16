@@ -1,9 +1,11 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.ResourceHandler
+import org.serverbuilder.FileServerBuilder
+
 /**
  * Created with IntelliJ IDEA.
  * User: ryan

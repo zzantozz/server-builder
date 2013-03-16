@@ -1,10 +1,11 @@
-package org.serverbuilder
+package org.serverbuilder.jetty8
 
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import org.serverbuilder.ServletBasedServerBuilder
 
 /**
  * Created with IntelliJ IDEA.
