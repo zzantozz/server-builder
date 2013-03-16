@@ -2,6 +2,7 @@ package org.serverbuilder
 
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.server.Server
+import org.serverbuilder.jetty7.Jetty7ServerBuilders
 import org.serverbuilder.jetty8.Jetty8ServerBuilders
 
 /**
@@ -13,7 +14,7 @@ import org.serverbuilder.jetty8.Jetty8ServerBuilders
 @CompileStatic
 class Servers {
     static ServerBuilders<Server> jetty7() {
-        null
+        new Jetty7ServerBuilders()
     }
 
     static ServerBuilders<Server> jetty8() {

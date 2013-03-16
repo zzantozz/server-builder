@@ -9,30 +9,46 @@ subprojects {
     repositories {
         mavenCentral()
     }
+    configurations {
+        optional // Like Maven's optional or provided dependencies
+    }
+    sourceSets {
+        main {
+            compileClasspath += configurations.optional
+            runtimeClasspath += configurations.optional
+        }
+        test {
+            compileClasspath += configurations.optional
+            runtimeClasspath += configurations.optional
+        }
+    }
     dependencies {
         compile(
             'org.codehaus.groovy:groovy-all:2.1.1',
-            'org.slf4j:slf4j-api:1.7.2',
         )
         testCompile(
         )
+    }
+    idea {
+        module {
+            scopes.PROVIDED.plus += configurations.optional
+        }
     }
 }
 
 project('server-builder-api') {
     dependencies {
         compile(
-            // Jersey client should be an optional dependency that users can choose to include if they want to use
-            // the client-building ability.
-            'com.sun.jersey:jersey-client:1.17',
-            'com.sun.jersey:jersey-core:1.17',
+        )
+        optional(
+            // Jersey server support
+            'com.sun.jersey:jersey-server:1.17',
             'javax.ws.rs:jsr311-api:1.1.1',
-
-            // only here for compilation--need to be optional/provided at runtime
-            'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
+            // Spring MVC support
             'org.springframework:spring-web:3.2.1.RELEASE',
-            'org.eclipse.jetty:jetty-server:8.1.9.v20130131',
-            'org.eclipse.jetty:jetty-server:7.6.10.v20130312',
+            // Optional jersey client for those who want the builder to provide a pre-configured client that can
+            // talk to the built server
+            'com.sun.jersey:jersey-client:1.17',
         )
         testCompile(
         )
@@ -43,8 +59,10 @@ project('server-builder-core') {
     dependencies {
         compile(
             project(':server-builder-api'),
-            // This shouldn't be a dependency here or should be an optional/provided one. For now, it's letting me
-            // run the tests.
+        )
+        optional(
+            'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
+            project(':server-builder-jetty7'),
             project(':server-builder-jetty8'),
         )
         testCompile(
@@ -59,20 +77,18 @@ project('server-builder-test-support') {
             project(':server-builder-core'),
             'org.spockframework:spock-core:0.7-groovy-2.0',
             'com.sun.jersey:jersey-client:1.17', // Just a convenient HTTP client to test with
-            'com.sun.jersey:jersey-core:1.17', // Needed for jersey client
-            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey client
-            'ch.qos.logback:logback-classic:1.0.9',
-
-            // maybe? should these be optional so the tests can compile but require the tested module to provide the
-            // classes at runtime?
+        )
+        optional(
+            // These are required to compile the test classes but mustn't interfere with the classpath of the module
+            // under test. Each module should supply its own, correct dependencies.
             'org.springframework:spring-webmvc:3.2.1.RELEASE',
             'org.springframework:spring-web:3.2.1.RELEASE',
             'org.springframework:spring-context:3.2.1.RELEASE',
             'org.springframework:spring-beans:3.2.1.RELEASE',
             'com.sun.jersey:jersey-server:1.17',
             'com.sun.jersey:jersey-servlet:1.17',
-            'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
-            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey-server
+            'com.sun.jersey:jersey-core:1.17',
+            'javax.ws.rs:jsr311-api:1.1.1',
             'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
         )
         testCompile(
@@ -83,20 +99,23 @@ project('server-builder-test-support') {
 project('server-builder-jetty8') {
     dependencies {
         compile(
-                project(':server-builder-api'),
-                'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
-                'org.springframework:spring-webmvc:3.2.1.RELEASE',
-                'org.springframework:spring-web:3.2.1.RELEASE',
-                'org.springframework:spring-context:3.2.1.RELEASE',
-                'org.springframework:spring-beans:3.2.1.RELEASE',
-                'com.sun.jersey:jersey-server:1.17',
-                'com.sun.jersey:jersey-servlet:1.17',
-                'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
-                'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey-server
-                'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
+            project(':server-builder-api'),
+            'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
+        )
+        optional(
+            'com.sun.jersey:jersey-client:1.17',
+            // Spring MVC support
+            'org.springframework:spring-webmvc:3.2.1.RELEASE',
+            'org.springframework:spring-web:3.2.1.RELEASE',
+            // Jersey server support
+            'com.sun.jersey:jersey-server:1.17',
+            'com.sun.jersey:jersey-servlet:1.17',
+            'com.sun.jersey:jersey-core:1.17',
+            'javax.ws.rs:jsr311-api:1.1.1',
+            'com.sun.jersey.contribs:jersey-spring:1.17',
         )
         testCompile(
-                project(':server-builder-test-support'),
+            project(':server-builder-test-support'),
         )
     }
 }
@@ -105,16 +124,20 @@ project('server-builder-jetty7') {
     dependencies {
         compile(
             project(':server-builder-api'),
+            'org.eclipse.jetty:jetty-server:7.6.10.v20130312',
             'org.eclipse.jetty:jetty-servlet:7.6.10.v20130312',
-            'org.springframework:spring-webmvc:3.2.1.RELEASE',
-            'org.springframework:spring-web:3.2.1.RELEASE',
-            'org.springframework:spring-context:3.2.1.RELEASE',
-            'org.springframework:spring-beans:3.2.1.RELEASE',
+        )
+        optional(
+            // Jersey server support
             'com.sun.jersey:jersey-server:1.17',
             'com.sun.jersey:jersey-servlet:1.17',
-            'com.sun.jersey:jersey-core:1.17', // Needed for jersey-server
-            'javax.ws.rs:jsr311-api:1.1.1', // Needed for jersey-server
-            'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
+            'com.sun.jersey:jersey-core:1.17',
+            'javax.ws.rs:jsr311-api:1.1.1',
+            'com.sun.jersey.contribs:jersey-spring:1.17',
+            // Spring MVC support
+            'org.springframework:spring-web:3.2.1.RELEASE',
+            'org.springframework:spring-webmvc:3.2.1.RELEASE',
+            'com.sun.jersey:jersey-client:1.17',
         )
         testCompile(
             project(':server-builder-test-support'),

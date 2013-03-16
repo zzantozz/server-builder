@@ -39,6 +39,12 @@ class FileServerBuilderTest<T> {
     }
 
     @Test
+    void 'a builder with no additional configuration behaves itself'() {
+        thisTestServer = builder.build()
+        builder.jerseyResource().get(String)
+    }
+
+    @Test
     void 'directory listings can be disabled'() {
         def builder = builder.atResourceBase(baseDirectory.absolutePath).withoutDirectoriesListed()
         thisTestServer = builder.build()
