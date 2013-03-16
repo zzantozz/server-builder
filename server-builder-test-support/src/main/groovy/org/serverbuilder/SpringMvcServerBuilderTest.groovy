@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 import com.sun.jersey.api.client.Client
 import org.junit.After
 import org.junit.Rule

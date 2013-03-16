@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 
 import com.sun.jersey.api.client.Client
 import org.junit.After
@@ -116,7 +116,7 @@ class JerseyServerBuilderTest<T> {
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="
                        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-                <bean class="org.jettyserverbuilder.jersey.ModuleTest.TestResource" scope="singleton"/>
+                <bean class="org.serverbuilder.jersey.ModuleTest.TestResource" scope="singleton"/>
             </beans>
             """.stripIndent()
             return it

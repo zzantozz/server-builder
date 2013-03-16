@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder

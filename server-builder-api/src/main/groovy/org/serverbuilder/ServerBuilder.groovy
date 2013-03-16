@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 
 import com.sun.jersey.api.client.WebResource
 import groovy.transform.CompileStatic

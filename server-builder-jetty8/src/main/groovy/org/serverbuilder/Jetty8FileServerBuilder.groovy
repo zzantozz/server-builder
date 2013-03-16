@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server

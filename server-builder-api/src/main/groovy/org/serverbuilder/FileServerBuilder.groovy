@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package org.jettyserverbuilder
+package org.serverbuilder
 import com.sun.jersey.spi.container.servlet.ServletContainer
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet
 import groovy.transform.CompileStatic
