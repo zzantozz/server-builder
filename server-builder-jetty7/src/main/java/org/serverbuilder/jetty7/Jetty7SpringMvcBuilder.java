@@ -14,6 +14,12 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 @CompileStatic
 public class Jetty7SpringMvcBuilder implements SpringMvcServerBuilder<Server> {
+    private WebApplicationContext rootContext;
+    private WebApplicationContext dispatcherContext;
+    private String contextPath = "/";
+    private String urlPattern = "/*";
+    private int port = 8080;
+
     @Override
     public SpringMvcServerBuilder<Server> withRootContext(WebApplicationContext rootContext) {
         this.rootContext = rootContext;
@@ -59,7 +65,7 @@ public class Jetty7SpringMvcBuilder implements SpringMvcServerBuilder<Server> {
 
     @Override
     public WebResource jerseyResource() {
-        return Client.create().resource("http://localhost:" + String.valueOf(port));
+        return Client.create().resource("http://localhost:" + port);
     }
 
     @Override
@@ -88,10 +94,4 @@ public class Jetty7SpringMvcBuilder implements SpringMvcServerBuilder<Server> {
             throw new IllegalStateException("Failed to stop server", e);
         }
     }
-
-    private WebApplicationContext rootContext;
-    private WebApplicationContext dispatcherContext;
-    private String contextPath = "/";
-    private String urlPattern = "/*";
-    private int port = 8080;
 }

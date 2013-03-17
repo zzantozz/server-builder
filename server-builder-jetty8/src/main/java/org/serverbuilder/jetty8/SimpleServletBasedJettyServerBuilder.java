@@ -7,6 +7,9 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.serverbuilder.ServerBuilder;
 
 public abstract class SimpleServletBasedJettyServerBuilder<BuilderType extends ServerBuilder<Server, BuilderType>> extends SimpleJettyServerBuilder<BuilderType> {
+    private final String contextPath;
+    private final String urlPattern;
+
     public SimpleServletBasedJettyServerBuilder(String contextPath, String urlPattern) {
         this.contextPath = contextPath;
         this.urlPattern = urlPattern;
@@ -53,7 +56,4 @@ public abstract class SimpleServletBasedJettyServerBuilder<BuilderType extends S
     public String getUrlPattern() {
         return urlPattern;
     }
-
-    private final String contextPath;
-    private final String urlPattern;
 }

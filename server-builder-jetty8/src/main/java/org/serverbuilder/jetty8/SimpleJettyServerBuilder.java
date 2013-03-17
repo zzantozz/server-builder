@@ -8,6 +8,8 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.serverbuilder.ServerBuilder;
 
 public abstract class SimpleJettyServerBuilder<BuilderType extends ServerBuilder<Server, BuilderType>> implements ServerBuilder<Server, BuilderType> {
+    private final int port;
+
     public SimpleJettyServerBuilder(int port) {
         this.port = port;
     }
@@ -18,7 +20,7 @@ public abstract class SimpleJettyServerBuilder<BuilderType extends ServerBuilder
 
     @Override
     public WebResource jerseyResource() {
-        return Client.create().resource("http://localhost:" + String.valueOf(getPort()));
+        return Client.create().resource("http://localhost:" + getPort());
     }
 
     @Override
@@ -49,6 +51,4 @@ public abstract class SimpleJettyServerBuilder<BuilderType extends ServerBuilder
     public int getPort() {
         return port;
     }
-
-    private final int port;
 }

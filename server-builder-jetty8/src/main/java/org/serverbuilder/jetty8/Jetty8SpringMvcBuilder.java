@@ -10,6 +10,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<SpringMvcServerBuilder<Server>> implements SpringMvcServerBuilder<Server> {
+    private WebApplicationContext rootContext;
+    private WebApplicationContext dispatcherContext;
+
     public Jetty8SpringMvcBuilder() {
     }
 
@@ -58,15 +61,4 @@ public class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder
             handler.addEventListener(new ContextLoaderListener(rootContext));
         return new ServletHolder(new DispatcherServlet(dispatcherContext));
     }
-
-    public WebApplicationContext getRootContext() {
-        return rootContext;
-    }
-
-    public WebApplicationContext getDispatcherContext() {
-        return dispatcherContext;
-    }
-
-    private WebApplicationContext rootContext;
-    private WebApplicationContext dispatcherContext;
 }

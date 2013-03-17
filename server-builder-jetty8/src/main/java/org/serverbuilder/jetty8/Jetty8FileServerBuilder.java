@@ -8,6 +8,10 @@ import org.serverbuilder.FileServerBuilder;
 
 @CompileStatic
 public class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<FileServerBuilder<Server>> implements FileServerBuilder<Server> {
+    private String resourceBase = ".";
+    private boolean directoriesListed = true;
+    private String[] welcomeFiles = new String[0];
+
     public Jetty8FileServerBuilder() {
     }
 
@@ -42,30 +46,5 @@ public class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<FileServer
         handler.setWelcomeFiles(this.welcomeFiles);
         handler.setResourceBase(this.resourceBase);
         return handler;
-    }
-
-    public String getResourceBase() {
-        return resourceBase;
-    }
-
-    public boolean getDirectoriesListed() {
-        return directoriesListed;
-    }
-
-    public boolean isDirectoriesListed() {
-        return directoriesListed;
-    }
-
-    public String[] getWelcomeFiles() {
-        return welcomeFiles;
-    }
-
-    private String resourceBase = ".";
-    private boolean directoriesListed = true;
-    private String[] welcomeFiles = new String[0];
-
-    private static <Value extends String> Value setResourceBase0(ResourceHandler propOwner, Value resourceBase) {
-        propOwner.setResourceBase(resourceBase);
-        return resourceBase;
     }
 }

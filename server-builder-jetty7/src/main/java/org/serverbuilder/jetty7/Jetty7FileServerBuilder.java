@@ -9,6 +9,11 @@ import org.serverbuilder.FileServerBuilder;
 
 @CompileStatic
 public class Jetty7FileServerBuilder implements FileServerBuilder<Server> {
+    private String resourceBase = ".";
+    private String[] welcomeFiles = new String[0];
+    private int port = 8080;
+    private boolean directoriesListed = true;
+
     @Override
     public FileServerBuilder<Server> atResourceBase(String resourceBase) {
         this.resourceBase = resourceBase;
@@ -35,7 +40,7 @@ public class Jetty7FileServerBuilder implements FileServerBuilder<Server> {
 
     @Override
     public WebResource jerseyResource() {
-        return Client.create().resource("http://localhost:" + String.valueOf(port));
+        return Client.create().resource("http://localhost:" + port);
     }
 
     @Override
@@ -61,51 +66,5 @@ public class Jetty7FileServerBuilder implements FileServerBuilder<Server> {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to stop server", e);
         }
-    }
-
-    public String getResourceBase() {
-        return resourceBase;
-    }
-
-    public void setResourceBase(String resourceBase) {
-        this.resourceBase = resourceBase;
-    }
-
-    public String[] getWelcomeFiles() {
-        return welcomeFiles;
-    }
-
-    public void setWelcomeFiles(String[] welcomeFiles) {
-        this.welcomeFiles = welcomeFiles;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public boolean getDirectoriesListed() {
-        return directoriesListed;
-    }
-
-    public boolean isDirectoriesListed() {
-        return directoriesListed;
-    }
-
-    public void setDirectoriesListed(boolean directoriesListed) {
-        this.directoriesListed = directoriesListed;
-    }
-
-    private String resourceBase = ".";
-    private String[] welcomeFiles = new String[0];
-    private int port = 8080;
-    private boolean directoriesListed = true;
-
-    private static <Value extends String> Value setResourceBase0(ResourceHandler propOwner, Value resourceBase) {
-        propOwner.setResourceBase(resourceBase);
-        return resourceBase;
     }
 }

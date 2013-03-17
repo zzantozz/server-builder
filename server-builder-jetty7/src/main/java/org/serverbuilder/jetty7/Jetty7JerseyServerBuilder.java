@@ -18,6 +18,13 @@ import javax.ws.rs.core.Application;
 
 @CompileStatic
 public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
+    private Class<? extends Application> applicationClass;
+    private String springContextConfigLocation;
+    private ConfigurableApplicationContext springContext;
+    private String contextPath = "/";
+    private String urlPattern = "/*";
+    private int port = 8080;
+
     @Override
     public JerseyServerBuilder<Server> withApplicationClass(Class<? extends Application> applicationClass) {
         this.applicationClass = applicationClass;
@@ -69,7 +76,7 @@ public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
 
     @Override
     public WebResource jerseyResource() {
-        return Client.create().resource("http://localhost:" + String.valueOf(port));
+        return Client.create().resource("http://localhost:" + port);
     }
 
     @Override
@@ -79,7 +86,7 @@ public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
         Object servletHolder;
         if (DefaultGroovyMethods.asBoolean(applicationClass)) {
             servletHolder = new ServletHolder(new ServletContainer(applicationClass));
-        } else if (DefaultGroovyMethods.asBoolean(springContextConfigLocation)) {
+        } else if (springContextConfigLocation != null) {
             handler.addEventListener(new ContextLoaderListener());
             handler.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, springContextConfigLocation);
             servletHolder = new ServletHolder(new SpringServlet());
@@ -107,62 +114,9 @@ public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
         }
     }
 
-    public Class<? extends Application> getApplicationClass() {
-        return applicationClass;
-    }
-
-    public void setApplicationClass(Class<? extends Application> applicationClass) {
-        this.applicationClass = applicationClass;
-    }
-
-    public String getSpringContextConfigLocation() {
-        return springContextConfigLocation;
-    }
-
-    public void setSpringContextConfigLocation(String springContextConfigLocation) {
-        this.springContextConfigLocation = springContextConfigLocation;
-    }
-
-    public ConfigurableApplicationContext getSpringContext() {
-        return springContext;
-    }
-
-    public void setSpringContext(ConfigurableApplicationContext springContext) {
-        this.springContext = springContext;
-    }
-
-    public String getContextPath() {
-        return contextPath;
-    }
-
-    public void setContextPath(String contextPath) {
-        this.contextPath = contextPath;
-    }
-
-    public String getUrlPattern() {
-        return urlPattern;
-    }
-
-    public void setUrlPattern(String urlPattern) {
-        this.urlPattern = urlPattern;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    private Class<? extends Application> applicationClass;
-    private String springContextConfigLocation;
-    private ConfigurableApplicationContext springContext;
-    private String contextPath = "/";
-    private String urlPattern = "/*";
-    private int port = 8080;
-
     public static class ExistingContextSpringServlet extends SpringServlet {
+        private ConfigurableApplicationContext context;
+
         public ExistingContextSpringServlet(ConfigurableApplicationContext context) {
             this.context = context;
         }
@@ -171,15 +125,5 @@ public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
         public ConfigurableApplicationContext getDefaultContext() {
             return context;
         }
-
-        public ConfigurableApplicationContext getContext() {
-            return context;
-        }
-
-        public void setContext(ConfigurableApplicationContext context) {
-            this.context = context;
-        }
-
-        private ConfigurableApplicationContext context;
     }
 }

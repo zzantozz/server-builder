@@ -16,6 +16,10 @@ import javax.ws.rs.core.Application;
 
 @CompileStatic
 public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<JerseyServerBuilder<Server>> implements JerseyServerBuilder<Server> {
+    private Class<? extends Application> applicationClass;
+    private String springContextConfigLocation;
+    private ConfigurableApplicationContext springContext;
+
     public Jetty8JerseyServerBuilder() {
     }
 
@@ -67,7 +71,7 @@ public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuil
     public ServletHolder servletHolder(ServletContextHandler handler) {
         if (DefaultGroovyMethods.asBoolean(applicationClass)) {
             return new ServletHolder(new ServletContainer(applicationClass));
-        } else if (DefaultGroovyMethods.asBoolean(springContextConfigLocation)) {
+        } else if (springContextConfigLocation != null) {
             handler.addEventListener(new ContextLoaderListener());
             handler.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, springContextConfigLocation);
             return new ServletHolder(new SpringServlet());
@@ -77,23 +81,9 @@ public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuil
 
     }
 
-    public Class<? extends Application> getApplicationClass() {
-        return applicationClass;
-    }
-
-    public String getSpringContextConfigLocation() {
-        return springContextConfigLocation;
-    }
-
-    public ConfigurableApplicationContext getSpringContext() {
-        return springContext;
-    }
-
-    private Class<? extends Application> applicationClass;
-    private String springContextConfigLocation;
-    private ConfigurableApplicationContext springContext;
-
     public static class ExistingContextSpringServlet extends SpringServlet {
+        private ConfigurableApplicationContext context;
+
         public ExistingContextSpringServlet(ConfigurableApplicationContext context) {
             this.context = context;
         }
@@ -102,15 +92,5 @@ public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuil
         public ConfigurableApplicationContext getDefaultContext() {
             return context;
         }
-
-        public ConfigurableApplicationContext getContext() {
-            return context;
-        }
-
-        public void setContext(ConfigurableApplicationContext context) {
-            this.context = context;
-        }
-
-        private ConfigurableApplicationContext context;
     }
 }
