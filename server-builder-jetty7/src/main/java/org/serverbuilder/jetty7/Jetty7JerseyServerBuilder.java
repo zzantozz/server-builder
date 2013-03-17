@@ -4,8 +4,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import groovy.transform.CompileStatic;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -16,7 +14,6 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import javax.ws.rs.core.Application;
 
-@CompileStatic
 public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
     private Class<? extends Application> applicationClass;
     private String springContextConfigLocation;
@@ -84,7 +81,7 @@ public class Jetty7JerseyServerBuilder implements JerseyServerBuilder<Server> {
         Server server = new Server(port);
         ServletContextHandler handler = new ServletContextHandler();
         Object servletHolder;
-        if (DefaultGroovyMethods.asBoolean(applicationClass)) {
+        if (applicationClass != null) {
             servletHolder = new ServletHolder(new ServletContainer(applicationClass));
         } else if (springContextConfigLocation != null) {
             handler.addEventListener(new ContextLoaderListener());

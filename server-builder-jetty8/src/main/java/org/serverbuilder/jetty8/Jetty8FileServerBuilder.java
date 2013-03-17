@@ -1,12 +1,10 @@
 package org.serverbuilder.jetty8;
 
-import groovy.transform.CompileStatic;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.serverbuilder.FileServerBuilder;
 
-@CompileStatic
 public class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<FileServerBuilder<Server>> implements FileServerBuilder<Server> {
     private String resourceBase = ".";
     private boolean directoriesListed = true;

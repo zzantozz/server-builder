@@ -29,9 +29,9 @@ subprojects {
     }
     dependencies {
         compile(
-            'org.codehaus.groovy:groovy-all:2.1.1',
         )
         testCompile(
+            'org.codehaus.groovy:groovy-all:2.1.1',
         )
     }
     idea {
@@ -80,6 +80,7 @@ project('server-builder-test-support') {
         compile(
             project(':server-builder-api'),
             project(':server-builder-core'),
+            'org.codehaus.groovy:groovy-all:2.1.1',
             'org.spockframework:spock-core:0.7-groovy-2.0',
             'com.sun.jersey:jersey-client:1.17', // Just a convenient HTTP client to test with
         )

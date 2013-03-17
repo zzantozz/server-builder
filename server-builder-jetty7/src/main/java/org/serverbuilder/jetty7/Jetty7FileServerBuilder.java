@@ -2,12 +2,10 @@ package org.serverbuilder.jetty7;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import groovy.transform.CompileStatic;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.serverbuilder.FileServerBuilder;
 
-@CompileStatic
 public class Jetty7FileServerBuilder implements FileServerBuilder<Server> {
     private String resourceBase = ".";
     private String[] welcomeFiles = new String[0];

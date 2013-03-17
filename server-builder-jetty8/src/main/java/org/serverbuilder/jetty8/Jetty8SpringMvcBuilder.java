@@ -1,6 +1,5 @@
 package org.serverbuilder.jetty8;
 
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -57,8 +56,7 @@ public class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder
 
     @Override
     public ServletHolder servletHolder(ServletContextHandler handler) {
-        if (DefaultGroovyMethods.asBoolean(rootContext))
-            handler.addEventListener(new ContextLoaderListener(rootContext));
+        if (rootContext != null) handler.addEventListener(new ContextLoaderListener(rootContext));
         return new ServletHolder(new DispatcherServlet(dispatcherContext));
     }
 }

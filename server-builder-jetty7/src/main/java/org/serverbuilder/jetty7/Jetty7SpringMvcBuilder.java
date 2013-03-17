@@ -2,8 +2,6 @@ package org.serverbuilder.jetty7;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import groovy.transform.CompileStatic;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -12,7 +10,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@CompileStatic
 public class Jetty7SpringMvcBuilder implements SpringMvcServerBuilder<Server> {
     private WebApplicationContext rootContext;
     private WebApplicationContext dispatcherContext;
@@ -71,8 +68,7 @@ public class Jetty7SpringMvcBuilder implements SpringMvcServerBuilder<Server> {
     @Override
     public Server build() {
         ServletContextHandler handler = new ServletContextHandler();
-        if (DefaultGroovyMethods.asBoolean(rootContext))
-            handler.addEventListener(new ContextLoaderListener(rootContext));
+        if (rootContext != null) handler.addEventListener(new ContextLoaderListener(rootContext));
         ServletHolder servletHolder = new ServletHolder(new DispatcherServlet(dispatcherContext));
         handler.setContextPath(this.contextPath);
         handler.addServlet(servletHolder, this.urlPattern);
