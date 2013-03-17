@@ -4,8 +4,9 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.serverbuilder.ServerBuilder;
 
-public abstract class SimpleServletBasedJettyServerBuilder<BuilderType extends SimpleServletBasedJettyServerBuilder<BuilderType>> extends SimpleJettyServerBuilder<BuilderType> {
+public abstract class SimpleServletBasedJettyServerBuilder<BuilderType extends ServerBuilder<Server, BuilderType>> extends SimpleJettyServerBuilder<BuilderType> {
     public SimpleServletBasedJettyServerBuilder(String contextPath, String urlPattern) {
         this.contextPath = contextPath;
         this.urlPattern = urlPattern;

@@ -7,7 +7,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.serverbuilder.ServerBuilder;
 
-public abstract class SimpleJettyServerBuilder<BuilderType extends SimpleJettyServerBuilder<BuilderType>> implements ServerBuilder<Server, BuilderType> {
+public abstract class SimpleJettyServerBuilder<BuilderType extends ServerBuilder<Server, BuilderType>> implements ServerBuilder<Server, BuilderType> {
     public SimpleJettyServerBuilder(int port) {
         this.port = port;
     }

@@ -15,7 +15,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import javax.ws.rs.core.Application;
 
 @CompileStatic
-public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8JerseyServerBuilder> implements JerseyServerBuilder<Server> {
+public class Jetty8JerseyServerBuilder extends SimpleServletBasedJettyServerBuilder<JerseyServerBuilder<Server>> implements JerseyServerBuilder<Server> {
     public Jetty8JerseyServerBuilder() {
     }
 

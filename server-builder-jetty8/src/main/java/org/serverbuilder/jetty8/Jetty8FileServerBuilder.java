@@ -7,7 +7,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.serverbuilder.FileServerBuilder;
 
 @CompileStatic
-public class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<Jetty8FileServerBuilder> implements FileServerBuilder<Server> {
+public class Jetty8FileServerBuilder extends SimpleJettyServerBuilder<FileServerBuilder<Server>> implements FileServerBuilder<Server> {
     public Jetty8FileServerBuilder() {
     }
 

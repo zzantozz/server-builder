@@ -4,13 +4,12 @@ import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.serverbuilder.JerseyServerBuilder;
 import org.serverbuilder.SpringMvcServerBuilder;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-public class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<Jetty8SpringMvcBuilder> implements SpringMvcServerBuilder<Server> {
+public class Jetty8SpringMvcBuilder extends SimpleServletBasedJettyServerBuilder<SpringMvcServerBuilder<Server>> implements SpringMvcServerBuilder<Server> {
     public Jetty8SpringMvcBuilder() {
     }
 
