@@ -120,12 +120,32 @@ project('server-builder-jetty7') {
     }
 }
 
-task('testtest', type: Test) {
+final MODULE_TEST_GROUP = 'Module test'
+
+task('testJetty7', type: Test) {
+    group MODULE_TEST_GROUP
+    description 'Tests the Jetty 7 module'
     systemProperty 'ServerBuilders.ImplementationClass', 'org.serverbuilder.jetty7.Jetty7ServerBuilders'
+    testReportDir = new File(testReportDir, 'jetty7')
     testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
     classpath =
         project(':server-builder-module-test').sourceSets.test.output +
-        project(':server-builder-module-test').configurations.testCompile +
-        project(':server-builder-jetty7').sourceSets.main.output +
-        project(':server-builder-jetty7').configurations.compile
+                project(':server-builder-module-test').configurations.testCompile +
+                project(':server-builder-jetty7').sourceSets.main.output +
+                project(':server-builder-jetty7').configurations.compile
 }
+test.dependsOn tasks.testJetty7
+
+task('testJetty8', type: Test) {
+    group MODULE_TEST_GROUP
+    description 'Tests the Jetty 8 module'
+    systemProperty 'ServerBuilders.ImplementationClass', 'org.serverbuilder.jetty8.Jetty8ServerBuilders'
+    testReportDir = new File(testReportDir, 'jetty8')
+    testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
+    classpath =
+        project(':server-builder-module-test').sourceSets.test.output +
+                project(':server-builder-module-test').configurations.testCompile +
+                project(':server-builder-jetty8').sourceSets.main.output +
+                project(':server-builder-jetty8').configurations.compile
+}
+test.dependsOn tasks.testJetty8
