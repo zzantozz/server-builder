@@ -20,6 +20,7 @@ subprojects {
         compile(
         )
         testCompile(
+            'junit:junit:4.11',
             'org.codehaus.groovy:groovy-all:2.1.1',
         )
     }
