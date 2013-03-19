@@ -121,9 +121,11 @@ project('server-builder-jetty7') {
 }
 
 task('testtest', type: Test) {
+    systemProperty 'ServerBuilders.ImplementationClass', 'org.serverbuilder.jetty7.Jetty7ServerBuilders'
     testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
     classpath =
         project(':server-builder-module-test').sourceSets.test.output +
         project(':server-builder-module-test').configurations.testCompile +
+        project(':server-builder-jetty7').sourceSets.main.output +
         project(':server-builder-jetty7').configurations.compile
 }

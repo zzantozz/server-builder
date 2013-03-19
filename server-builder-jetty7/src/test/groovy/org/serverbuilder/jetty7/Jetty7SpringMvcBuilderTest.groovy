@@ -1,7 +1,7 @@
 package org.serverbuilder.jetty7
 
 import org.eclipse.jetty.server.Server
-import org.serverbuilder.ServersOld
+import org.serverbuilder.Servers
 import org.serverbuilder.SpringMvcServerBuilderTest
 
 /**
@@ -12,6 +12,6 @@ import org.serverbuilder.SpringMvcServerBuilderTest
  */
 class Jetty7SpringMvcBuilderTest extends SpringMvcServerBuilderTest<Server> {
     Jetty7SpringMvcBuilderTest() {
-        super(ServersOld.jetty7())
+        super(Servers.jetty7())
     }
 }

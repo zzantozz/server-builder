@@ -2,7 +2,7 @@ package org.serverbuilder.jetty8
 
 import org.eclipse.jetty.server.Server
 import org.serverbuilder.FileServerBuilderTest
-import org.serverbuilder.ServersOld
+import org.serverbuilder.Servers
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +12,6 @@ import org.serverbuilder.ServersOld
  */
 class Jetty8FileServerBuilderTest extends FileServerBuilderTest<Server> {
     Jetty8FileServerBuilderTest() {
-        super(ServersOld.jetty8())
+        super(Servers.jetty8())
     }
 }

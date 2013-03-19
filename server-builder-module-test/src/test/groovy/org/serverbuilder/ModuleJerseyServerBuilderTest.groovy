@@ -8,6 +8,6 @@ package org.serverbuilder
  */
 class ModuleJerseyServerBuilderTest extends JerseyServerBuilderTest {
     ModuleJerseyServerBuilderTest() {
-        super(Servers.newJerseyServer())
+        super(ServerBuildersLoader.loadServerBuildersForTest())
     }
 }

@@ -8,6 +8,6 @@ package org.serverbuilder
  */
 class ModuleFileServerBuilderTest extends FileServerBuilderTest {
     ModuleFileServerBuilderTest() {
-        super(Servers.newFileServer())
+        super(ServerBuildersLoader.loadServerBuildersForTest())
     }
 }

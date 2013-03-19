@@ -2,7 +2,7 @@ package org.serverbuilder.jetty7
 
 import org.eclipse.jetty.server.Server
 import org.serverbuilder.JerseyServerBuilderTest
-import org.serverbuilder.ServersOld
+import org.serverbuilder.Servers
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +12,6 @@ import org.serverbuilder.ServersOld
  */
 class Jetty7JerseyServerBuilderTest extends JerseyServerBuilderTest<Server> {
     Jetty7JerseyServerBuilderTest() {
-        super(ServersOld.jetty7())
+        super(Servers.jetty7())
     }
 }

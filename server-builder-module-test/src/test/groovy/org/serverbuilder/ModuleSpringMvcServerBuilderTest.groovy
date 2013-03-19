@@ -8,6 +8,6 @@ package org.serverbuilder
  */
 class ModuleSpringMvcServerBuilderTest extends SpringMvcServerBuilderTest {
     ModuleSpringMvcServerBuilderTest() {
-        super(Servers.newSpringMvcServer())
+        super(ServerBuildersLoader.loadServerBuildersForTest())
     }
 }
