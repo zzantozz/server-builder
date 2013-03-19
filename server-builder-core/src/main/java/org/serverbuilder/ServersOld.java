@@ -4,7 +4,7 @@ import org.eclipse.jetty.server.Server;
 import org.serverbuilder.jetty7.Jetty7ServerBuilders;
 import org.serverbuilder.jetty8.Jetty8ServerBuilders;
 
-public class Servers {
+public class ServersOld {
     public static ServerBuilders<Server> jetty7() {
         return new Jetty7ServerBuilders();
     }

@@ -1,4 +1,5 @@
 apply plugin: 'idea'
+apply plugin: 'java' // Needed for default values in the custom Test task(s)
 
 idea.project.ipr {
     withXml { provider ->
@@ -8,24 +9,12 @@ idea.project.ipr {
 subprojects {
     apply plugin: 'groovy'
     apply plugin: 'idea'
+    apply from: "$project.rootDir/optional-dependencies.gradle"
 
     sourceCompatibility = 1.6
 
     repositories {
         mavenCentral()
-    }
-    configurations {
-        optional // Like Maven's optional or provided dependencies
-    }
-    sourceSets {
-        main {
-            compileClasspath += configurations.optional
-            runtimeClasspath += configurations.optional
-        }
-        test {
-            compileClasspath += configurations.optional
-            runtimeClasspath += configurations.optional
-        }
     }
     dependencies {
         compile(
@@ -34,28 +23,29 @@ subprojects {
             'org.codehaus.groovy:groovy-all:2.1.1',
         )
     }
-    idea {
-        module {
-            scopes.PROVIDED.plus += configurations.optional
-        }
-    }
 }
+
+// These are the dependencies that are required to build the project and run the module tests but are never meant
+// to be transitive dependencies of any module here because they should instead already be available on the class path
+// wherever someone is using a server builder.
+def optionalThirdPartyLibs = [
+    // Jersey server support
+    'com.sun.jersey:jersey-server:1.17',
+    'com.sun.jersey:jersey-servlet:1.17',
+    'com.sun.jersey:jersey-core:1.17',
+    'javax.ws.rs:jsr311-api:1.1.1',
+    'com.sun.jersey.contribs:jersey-spring:1.17',
+    // Spring MVC support
+    'org.springframework:spring-web:3.2.1.RELEASE',
+    'org.springframework:spring-webmvc:3.2.1.RELEASE',
+    // For getting a client WebResource from a builder
+    'com.sun.jersey:jersey-client:1.17',
+]
 
 project('server-builder-api') {
     dependencies {
-        compile(
-        )
         optional(
-            // Jersey server support
-            'com.sun.jersey:jersey-server:1.17',
-            'javax.ws.rs:jsr311-api:1.1.1',
-            // Spring MVC support
-            'org.springframework:spring-web:3.2.1.RELEASE',
-            // Optional jersey client for those who want the builder to provide a pre-configured client that can
-            // talk to the built server
-            'com.sun.jersey:jersey-client:1.17',
-        )
-        testCompile(
+            optionalThirdPartyLibs
         )
     }
 }
@@ -70,8 +60,6 @@ project('server-builder-core') {
             project(':server-builder-jetty7'),
             project(':server-builder-jetty8'),
         )
-        testCompile(
-        )
     }
 }
 
@@ -81,23 +69,22 @@ project('server-builder-test-support') {
             project(':server-builder-api'),
             project(':server-builder-core'),
             'org.codehaus.groovy:groovy-all:2.1.1',
-            'org.spockframework:spock-core:0.7-groovy-2.0',
+            'junit:junit:4.11',
             'com.sun.jersey:jersey-client:1.17', // Just a convenient HTTP client to test with
         )
         optional(
-            // These are required to compile the test classes but mustn't interfere with the classpath of the module
-            // under test. Each module should supply its own, correct dependencies.
-            'org.springframework:spring-webmvc:3.2.1.RELEASE',
-            'org.springframework:spring-web:3.2.1.RELEASE',
-            'org.springframework:spring-context:3.2.1.RELEASE',
-            'org.springframework:spring-beans:3.2.1.RELEASE',
-            'com.sun.jersey:jersey-server:1.17',
-            'com.sun.jersey:jersey-servlet:1.17',
-            'com.sun.jersey:jersey-core:1.17',
-            'javax.ws.rs:jsr311-api:1.1.1',
-            'com.sun.jersey.contribs:jersey-spring:1.17', // Should probably be optional or maybe a separate module?
+            optionalThirdPartyLibs
         )
+    }
+}
+
+project('server-builder-module-test') {
+    dependencies {
         testCompile(
+            // Build against the api and the module containing the actual tests
+            project(':server-builder-api'),
+            project(':server-builder-test-support'),
+            optionalThirdPartyLibs
         )
     }
 }
@@ -109,16 +96,7 @@ project('server-builder-jetty8') {
             'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131',
         )
         optional(
-            'com.sun.jersey:jersey-client:1.17',
-            // Spring MVC support
-            'org.springframework:spring-webmvc:3.2.1.RELEASE',
-            'org.springframework:spring-web:3.2.1.RELEASE',
-            // Jersey server support
-            'com.sun.jersey:jersey-server:1.17',
-            'com.sun.jersey:jersey-servlet:1.17',
-            'com.sun.jersey:jersey-core:1.17',
-            'javax.ws.rs:jsr311-api:1.1.1',
-            'com.sun.jersey.contribs:jersey-spring:1.17',
+            optionalThirdPartyLibs
         )
         testCompile(
             project(':server-builder-test-support'),
@@ -134,19 +112,18 @@ project('server-builder-jetty7') {
             'org.eclipse.jetty:jetty-servlet:7.6.10.v20130312',
         )
         optional(
-            // Jersey server support
-            'com.sun.jersey:jersey-server:1.17',
-            'com.sun.jersey:jersey-servlet:1.17',
-            'com.sun.jersey:jersey-core:1.17',
-            'javax.ws.rs:jsr311-api:1.1.1',
-            'com.sun.jersey.contribs:jersey-spring:1.17',
-            // Spring MVC support
-            'org.springframework:spring-web:3.2.1.RELEASE',
-            'org.springframework:spring-webmvc:3.2.1.RELEASE',
-            'com.sun.jersey:jersey-client:1.17',
+            optionalThirdPartyLibs
         )
         testCompile(
             project(':server-builder-test-support'),
         )
     }
+}
+
+task('testtest', type: Test) {
+    testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
+    classpath =
+        project(':server-builder-module-test').sourceSets.test.output +
+        project(':server-builder-module-test').configurations.testCompile +
+        project(':server-builder-jetty7').configurations.compile
 }

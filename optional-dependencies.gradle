@@ -1,0 +1,18 @@
+configurations {
+    optional // Like Maven's optional or provided dependencies
+}
+sourceSets {
+    main {
+        compileClasspath += configurations.optional
+        runtimeClasspath += configurations.optional
+    }
+    test {
+        compileClasspath += configurations.optional
+        runtimeClasspath += configurations.optional
+    }
+}
+idea {
+    module {
+        scopes.PROVIDED.plus += configurations.optional
+    }
+}
