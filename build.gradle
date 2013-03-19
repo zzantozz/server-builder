@@ -80,7 +80,7 @@ project('server-builder-test-support') {
 
 project('server-builder-module-test') {
     dependencies {
-        testCompile(
+        compile(
             // Build against the api and the module containing the actual tests
             project(':server-builder-api'),
             project(':server-builder-test-support'),
@@ -127,12 +127,12 @@ task('testJetty7', type: Test) {
     description 'Tests the Jetty 7 module'
     systemProperty 'ServerBuilders.ImplementationClass', 'org.serverbuilder.jetty7.Jetty7ServerBuilders'
     testReportDir = new File(testReportDir, 'jetty7')
-    testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
+    testClassesDir = project(':server-builder-module-test').sourceSets.main.output.classesDir
     classpath =
-        project(':server-builder-module-test').sourceSets.test.output +
-                project(':server-builder-module-test').configurations.testCompile +
-                project(':server-builder-jetty7').sourceSets.main.output +
-                project(':server-builder-jetty7').configurations.compile
+        project(':server-builder-module-test').sourceSets.main.output +
+        project(':server-builder-module-test').configurations.compile +
+        project(':server-builder-jetty7').sourceSets.main.output +
+        project(':server-builder-jetty7').configurations.compile
 }
 test.dependsOn tasks.testJetty7
 
@@ -141,11 +141,11 @@ task('testJetty8', type: Test) {
     description 'Tests the Jetty 8 module'
     systemProperty 'ServerBuilders.ImplementationClass', 'org.serverbuilder.jetty8.Jetty8ServerBuilders'
     testReportDir = new File(testReportDir, 'jetty8')
-    testClassesDir = project(':server-builder-module-test').sourceSets.test.output.classesDir
+    testClassesDir = project(':server-builder-module-test').sourceSets.main.output.classesDir
     classpath =
-        project(':server-builder-module-test').sourceSets.test.output +
-                project(':server-builder-module-test').configurations.testCompile +
-                project(':server-builder-jetty8').sourceSets.main.output +
-                project(':server-builder-jetty8').configurations.compile
+        project(':server-builder-module-test').sourceSets.main.output +
+        project(':server-builder-module-test').configurations.compile +
+        project(':server-builder-jetty8').sourceSets.main.output +
+        project(':server-builder-jetty8').configurations.compile
 }
 test.dependsOn tasks.testJetty8
