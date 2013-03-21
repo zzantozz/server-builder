@@ -46,7 +46,7 @@ class ServerBuildersLoader {
 
     static ServerBuilders castToServerBuilders(instance) {
         try {
-            instance as ServerBuilders
+            (ServerBuilders) instance
         } catch (e) {
             throw new IllegalStateException("$STANDARD_EXCEPTION_PREFIX: provided class doesn't implement ${ServerBuilders.class.name}", e)
         }
